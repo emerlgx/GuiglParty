@@ -1,0 +1,35 @@
+Blueprint
+
+- Screen in quarters
+
+- hot swap minigames 
+- play on piano
+
+Games: 
+- each game uses 3 buttons  
+- games confined to each section
+- brick breaker, snake, tetris-lite, GvU:O:tV(1p), "guitar hero", ...
+
+Game Swaps:
+- swap at ~random intervals
+- swap types: 
+  - players swap games
+  - players swap quatrants
+  - (maybe) change out game type (use constructors in this case)
+- to swap:
+  - "pause world"
+  - pick type of swap
+  - pick n players to apply swap to
+
+- (maybe) games change using old game's state (e.g. tetris -> brick break)
+
+- possible 2 - player games:
+  - fuse screens temporarily
+  - play pong, GvU:O:tV(2p)
+  
+Bells & Whistles:
+- alerts
+- music (Crazy in Love)
+  - speed up just before transition
+  - general audio cues
+  - use different versions of song OR different parts
