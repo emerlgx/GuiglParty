@@ -14,7 +14,7 @@ Game Swaps:
 - swap at ~random intervals
 - swap types: 
   - players swap games
-  - players swap quatrants
+  - players swap quadrants
   - (maybe) change out game type (use constructors in this case)
 - to swap:
   - "pause world"
