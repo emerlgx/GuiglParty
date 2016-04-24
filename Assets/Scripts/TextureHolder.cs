@@ -88,6 +88,8 @@ public class TextureHolder : MonoBehaviour {
 				if (quadP4.transform.rotation.z < 270.0f && quadP4.transform.rotation.z > 90.0f) {
 					quadP4.transform.rotation = Quaternion.AngleAxis (180, Vector3.forward);
 				}
+
+				SendMessageUpwards ("DoneFlipping");
 			}
 			
 		}
@@ -109,7 +111,7 @@ public class TextureHolder : MonoBehaviour {
 				swapA.transform.position = goalPosA;
 				swapB.transform.position = goalPosB;
 				isSwapping2 = false;
-
+				SendMessageUpwards ("DoneSwapping");
 			}
 		} else if (isSwapping3) {
 			swapA.transform.position = new Vector3 (Mathf.Lerp (swapA.transform.position.x, goalPosA.x, Time.deltaTime / swapDuration),
@@ -131,8 +133,8 @@ public class TextureHolder : MonoBehaviour {
 				swapA.transform.position = goalPosA;
 				swapB.transform.position = goalPosB;
 				swapC.transform.position = goalPosC;
-				isSwapping2 = false;
-
+				isSwapping3 = false;
+				SendMessageUpwards ("DoneSwapping");
 			}
 		} else if (isSwapping4) {
 			swapA.transform.position = new Vector3 (Mathf.Lerp (swapA.transform.position.x, goalPosA.x, Time.deltaTime / swapDuration),
@@ -161,7 +163,7 @@ public class TextureHolder : MonoBehaviour {
 				swapC.transform.position = goalPosC;
 				swapD.transform.position = goalPosD;
 				isSwapping4 = false;
-
+				SendMessageUpwards ("DoneSwapping");
 			}
 		}
 	}
