@@ -1,0 +1,257 @@
+fileFormatVersion: 2
+guid: 278d89f469c37ec48b6ca027e2cf1a24
+timeCreated: 1433088771
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: explosion cartoon_0
+    21300002: explosion cartoon_1
+    21300004: explosion cartoon_2
+    21300006: explosion cartoon_3
+    21300008: explosion cartoon_4
+    21300010: explosion cartoon_5
+    21300012: explosion cartoon_6
+    21300014: explosion cartoon_7
+    21300016: explosion cartoon_8
+    21300018: explosion cartoon_9
+    21300020: explosion cartoon_10
+    21300022: explosion cartoon_11
+    21300024: explosion cartoon_12
+    21300026: explosion cartoon_14
+    21300028: explosion cartoon_15
+    21300030: explosion cartoon_16
+    21300032: explosion cartoon_17
+    21300034: explosion cartoon_19
+    21300036: explosion cartoon_23
+    21300038: explosion cartoon_25
+    21300040: explosion cartoon_28
+    21300042: explosion cartoon_29
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 8
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: explosion cartoon_0
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 714
+        width: 258
+        height: 236
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: explosion cartoon_1
+      rect:
+        serializedVersion: 2
+        x: 291
+        y: 713
+        width: 258
+        height: 236
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: explosion cartoon_2
+      rect:
+        serializedVersion: 2
+        x: 553
+        y: 714
+        width: 258
+        height: 236
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: explosion cartoon_3
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 477
+        width: 258
+        height: 236
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: explosion cartoon_4
+      rect:
+        serializedVersion: 2
+        x: 290
+        y: 480
+        width: 258
+        height: 236
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: explosion cartoon_5
+      rect:
+        serializedVersion: 2
+        x: 556
+        y: 481
+        width: 258
+        height: 236
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: explosion cartoon_6
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 241
+        width: 258
+        height: 236
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: explosion cartoon_7
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 243
+        width: 258
+        height: 236
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: explosion cartoon_8
+      rect:
+        serializedVersion: 2
+        x: 677
+        y: 446
+        width: 9
+        height: 5
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: explosion cartoon_14
+      rect:
+        serializedVersion: 2
+        x: 557
+        y: 387
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: explosion cartoon_15
+      rect:
+        serializedVersion: 2
+        x: 765
+        y: 391
+        width: 11
+        height: 12
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: explosion cartoon_16
+      rect:
+        serializedVersion: 2
+        x: 802
+        y: 373
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: explosion cartoon_17
+      rect:
+        serializedVersion: 2
+        x: 788
+        y: 363
+        width: 9
+        height: 8
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: explosion cartoon_19
+      rect:
+        serializedVersion: 2
+        x: 548
+        y: 242
+        width: 258
+        height: 236
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: explosion cartoon_23
+      rect:
+        serializedVersion: 2
+        x: 444
+        y: 96
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: explosion cartoon_25
+      rect:
+        serializedVersion: 2
+        x: 287
+        y: 1
+        width: 257
+        height: 236
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: explosion cartoon_28
+      rect:
+        serializedVersion: 2
+        x: 490
+        y: 58
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: explosion cartoon_29
+      rect:
+        serializedVersion: 2
+        x: 498
+        y: 57
+        width: 5
+        height: 4
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
