@@ -14,4 +14,12 @@ public class Partyer : MonoBehaviour {
 		name = name_;
 		face = face_;
 	}
+
+	public void givePoints(int points) {
+		score += points;
+	}
+
+	public int getScore() {
+		return score;
+	}
 }
