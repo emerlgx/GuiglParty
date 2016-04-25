@@ -7,4 +7,6 @@ public class Constants {
 	public static Vector2 gameSize = new Vector2(1000, 1000); //unity units	
 }
 
-enum ControlCommand { Start, Stop, /*GoFast, GoSlow*/ };
+public enum ControlCommand { Start, Stop, /*GoFast, GoSlow*/ };
+
+public enum PartyNames { Guigl, Ubaldino, Walusneaki, Blooch };

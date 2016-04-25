@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MiniGame : MonoBehaviour {
+abstract public class MiniGame : MonoBehaviour {
 	public Partyer partyer;
 
 	// Use this for initialization
@@ -14,6 +14,6 @@ public class MiniGame : MonoBehaviour {
 	
 	}
 
-	abstract void tick (InputSet input);
-	abstract void control (ControlCommand command);
+	public abstract void tick (InputSet input);
+	public abstract void control (ControlCommand command);
 }

@@ -15,9 +15,9 @@ public class InputRange {
 }
 
 public class InputSet {
-	static public bool left;
-	static public bool middle;
-	static public bool right;
+	readonly public bool left;
+	readonly public bool middle;
+	readonly public bool right;
 
 	public InputSet(bool l, bool m, bool r) {
 		left   = l;
@@ -41,13 +41,13 @@ public class KeyInput : MonoBehaviour {
 	
 	// Update is called once per frame
 	public InputSet[] getInputs() {
-		InputSet sectionInputs = new InputSet[4];
+		InputSet[] sectionInputs = new InputSet[4];
 
 		for (int i = 0; i < 4; i++) {
 			InputSet sectionInput = new InputSet(
-			  MidiMaster.GetKey(ranges[i].left)   > 0);
-			  MidiMaster.GetKey(ranges[i].middle) > 0);
-			  MidiMaster.GetKey(ranges[i].right)  > 0);
+			  MidiMaster.GetKey(ranges[i].left)   > 0,
+			  MidiMaster.GetKey(ranges[i].middle) > 0,
+			  MidiMaster.GetKey(ranges[i].right)  > 0
 			);
 
 			sectionInputs[i] = sectionInput;
