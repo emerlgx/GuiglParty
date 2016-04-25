@@ -2,5 +2,8 @@
 using System.Collections;
 
 public class MiniGameRef : MonoBehaviour {
-	public MiniGame game;
+	private string gameName;
+	private MiniGame getGame() {
+		return GetComponentInParent<MiniGame>();
+	}
 }

@@ -3,14 +3,19 @@ using System.Collections;
 using System.Diagnostics;
 
 public class RunOneGame : MonoBehaviour {
-
-	public GameObject gameCam;
+	public GameObject gameCamera;
+	public GameObject miniGameObjectTemplate;
+	private MiniGame game;
 
 	void Start () {
-		//sort of check things are properly assigned
-		MiniGameRef mgr = gameCam.GetComponent<MiniGameRef>();
-		MiniGame game   = mgr.game;
-		//should check that game not null
+		GameObject miniGameObject = Instantiate(miniGameObjectTemplate);
+		Vector3 posn = gameCamera.transform.position;
+		        posn.z = 0;
+		miniGameObject.transform.position = posn; 
+		miniGameObject.transform.SetParent(gameCamera.transform);
+
+		game = miniGameObject.GetComponent<MiniGame>();
+		game.partyer = Instantiate(Resources.Load("Assets/Testing/testPlayer") as GameObject).GetComponent<Partyer>();
 	}
 	
 	void Update () {
@@ -19,7 +24,6 @@ public class RunOneGame : MonoBehaviour {
 		bool right  = Input.GetKey(KeyCode.D);
 		InputSet input = new InputSet(left, middle, right);
 
-		MiniGame mg = gameCam.GetComponent<MiniGameRef>().game;
-		mg.tick(input);
+		game.tick(input);
 	}
 }
