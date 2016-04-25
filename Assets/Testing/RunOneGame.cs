@@ -15,7 +15,9 @@ public class RunOneGame : MonoBehaviour {
 		miniGameObject.transform.SetParent(gameCamera.transform);
 
 		game = miniGameObject.GetComponent<MiniGame>();
-		game.partyer = Instantiate(Resources.Load("Assets/Testing/testPlayer") as GameObject).GetComponent<Partyer>();
+		Partyer partyer = new Partyer();
+		partyer.setPartyer("test Blooch", Resources.Load("Assets/Characters/blooch") as Sprite);
+		game.partyer = partyer;
 	}
 	
 	void Update () {
