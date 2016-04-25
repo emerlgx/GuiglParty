@@ -5,6 +5,7 @@ public class Snake : MiniGame {
 	InputSet inputSet;
 
 	public Rigidbody2D SnakeHead;	// the part of the snake that the player controls
+	public SpriteRenderer SnakeSprite;		// Defaults to Guigl. will be changed when a new partyer is selected
 	public GameObject BeetPrefab;	// used to make beets for the snake to eat
 
 	public float maxSpeed = 10;		// we will not add force above this speed
@@ -53,6 +54,13 @@ public class Snake : MiniGame {
 
 	public override void control (ControlCommand command) {
 		// start and stop the game based on commands
+	}
+
+	public void setPartyer(Partyer p) {
+		MiniGame:setPartyer (p);
+
+		// change the sprite to the current player
+		SnakeSprite.sprite = p.face;
 	}
 
 	public void makeBeet() {
