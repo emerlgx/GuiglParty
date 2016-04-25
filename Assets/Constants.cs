@@ -7,3 +7,4 @@ public class Constants {
 	public static Vector2 gameSize = {1000, 1000}; //unity units	
 }
 
+enum ControlCommand { Start, Stop, /*GoFast, GoSlow*/ };
