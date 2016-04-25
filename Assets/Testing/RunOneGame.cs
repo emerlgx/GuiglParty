@@ -1,12 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Diagnostics;
 
 public class RunOneGame : MonoBehaviour {
 
-	public GameObject camera;
+	public GameObject gameCam;
 
 	void Start () {
-		camera.GetComponent<MiniGameRef>();
+		//sort of check things are properly assigned
+		MiniGameRef mgr = gameCam.GetComponent<MiniGameRef>();
+		MiniGame game   = mgr.game;
+		//should check that game not null
 	}
 	
 	void Update () {
@@ -15,7 +19,7 @@ public class RunOneGame : MonoBehaviour {
 		bool right  = Input.GetKey(KeyCode.D);
 		InputSet input = new InputSet(left, middle, right);
 
-		MiniGame mg = camera.GetComponent<MiniGameRef>().game;
+		MiniGame mg = gameCam.GetComponent<MiniGameRef>().game;
 		mg.tick(input);
 	}
 }

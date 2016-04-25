@@ -14,7 +14,10 @@ public class Snake : MiniGame {
 	
 	}
 
-	void tick (InputSet input) {
+	public override void tick(InputSet input) {
 		inputSet = input;
+	}
+
+	public override void control(ControlCommand cmd) {
 	}
 }

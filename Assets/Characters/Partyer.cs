@@ -3,6 +3,6 @@ using System.Collections;
 
 public class Partyer : MonoBehaviour {
 	public int score;
-	public Texture2D face;
+	public Sprite face;
 	public string name;
 }
