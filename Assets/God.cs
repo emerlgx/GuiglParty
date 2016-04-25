@@ -17,9 +17,6 @@ public class God : MonoBehaviour {
 			(int)PartyNames.Guigl,      (int)PartyNames.Ubaldino, 
 			(int)PartyNames.Walusneaki, (int)PartyNames.Blooch 
 		};
-		foreach (GameObject camera in cameras) {
-			camera.GetComponent<MiniGameRef>();
-		}
 	}
 	
 	// Update is called once per frame
@@ -36,7 +33,7 @@ public class God : MonoBehaviour {
 			InputSet[] inputs = keyInput.getInputs();
 			Dictionary<MiniGame, InputSet> matchedInputs = organizeInputs(inputs);
 			foreach (GameObject camera in cameras) {
-				MiniGame mg = camera.GetComponent<MiniGameRef>().game;
+				MiniGame mg = camera.GetComponentInChildren<MiniGame>();
 				InputSet input = new InputSet(false, false, false);
 				matchedInputs.TryGetValue(mg, out input);
 				mg.tick(input);
@@ -47,7 +44,7 @@ public class God : MonoBehaviour {
 	public Dictionary<MiniGame, InputSet> organizeInputs(InputSet[] inputs) {
 		Dictionary<MiniGame, InputSet> gameInputs = new Dictionary<MiniGame, InputSet>();
 		for (int i = 0; i < 4; i++) {
-			MiniGame rightGame = cameras[ keyboardPlayerMap[i] ].GetComponent<MiniGameRef>().game;
+			MiniGame rightGame = cameras[ keyboardPlayerMap[i] ].GetComponentInChildren<MiniGame>();
 			gameInputs.Add(rightGame, inputs[i]);
 		}
 		return gameInputs;
