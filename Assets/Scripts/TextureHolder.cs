@@ -37,7 +37,7 @@ public class TextureHolder : MonoBehaviour {
 	void Start () {
 
 		//SwapCameras4Clockwise (1, 2, 4, 3, 1.0f);
-		flipScreens(true,false,true,true,0.5f);
+		//flipScreens(true,false,true,true,0.5f);
 	}
 	
 	// change position of the screens based on given instructions
@@ -89,7 +89,7 @@ public class TextureHolder : MonoBehaviour {
 					quadP4.transform.rotation = Quaternion.AngleAxis (180, Vector3.forward);
 				}
 
-				SendMessageUpwards ("DoneFlipping");
+				//SendMessageUpwards ("DoneFlipping");
 			}
 			
 		}
@@ -111,7 +111,7 @@ public class TextureHolder : MonoBehaviour {
 				swapA.transform.position = goalPosA;
 				swapB.transform.position = goalPosB;
 				isSwapping2 = false;
-				SendMessageUpwards ("DoneSwapping");
+				//SendMessageUpwards ("DoneSwapping");
 			}
 		} else if (isSwapping3) {
 			swapA.transform.position = new Vector3 (Mathf.Lerp (swapA.transform.position.x, goalPosA.x, Time.deltaTime / swapDuration),
@@ -134,7 +134,7 @@ public class TextureHolder : MonoBehaviour {
 				swapB.transform.position = goalPosB;
 				swapC.transform.position = goalPosC;
 				isSwapping3 = false;
-				SendMessageUpwards ("DoneSwapping");
+				//SendMessageUpwards ("DoneSwapping");
 			}
 		} else if (isSwapping4) {
 			swapA.transform.position = new Vector3 (Mathf.Lerp (swapA.transform.position.x, goalPosA.x, Time.deltaTime / swapDuration),
@@ -163,7 +163,7 @@ public class TextureHolder : MonoBehaviour {
 				swapC.transform.position = goalPosC;
 				swapD.transform.position = goalPosD;
 				isSwapping4 = false;
-				SendMessageUpwards ("DoneSwapping");
+				//sSendMessageUpwards ("DoneSwapping");
 			}
 		}
 	}
