@@ -4,36 +4,47 @@ using System.Collections;
 public class Move2Left : MiniGame {
 	public Rigidbody2D jumper;
 	public JumperController jc;
+	public GoalTrigger gt;
 
 	public Transform respawnPoint;
 
 	public float moveSpeed = 5;
-	public float jumpPower = 5;
+	public float jumpPower = 100;
+
+	float jumpTimer = 1.0f;
+	float jumpTimerMax = 1.0f;
 
 	InputSet inputs;
 	bool isJumping = true;
 
+	void Awake () {
+		inputs = new InputSet (false, false, false);
+	}
+
 	void FixedUpdate() {
 		if (inputs.left) {
-			Debug.Log("Going Left!");
+			//Debug.Log("Going Left!");
 			Vector3 tempPos = jumper.transform.position;
 			tempPos.x -= moveSpeed * Time.deltaTime;
 			jumper.transform.position = tempPos;
 		}
 
 		if (inputs.right) {
-			Debug.Log("Going Right!");
+			//Debug.Log("Going Right!");
 			Vector3 tempPos = jumper.transform.position;
 			tempPos.x += moveSpeed * Time.deltaTime;
 			jumper.transform.position = tempPos;
 		}
 
-		if (inputs.middle && !isJumping) {
+		if (inputs.middle && (!isJumping || jumpTimer <= 0.0f)) {
 			Debug.Log("Going Up!");
-			jumper.AddForce (new Vector2 (0, jumpPower));
+			jumper.AddForce(Vector2.up * moveSpeed, ForceMode2D.Impulse);
+
 			isJumping = true;
+			jumpTimer = jumpTimerMax;
 		}
 
+		jumpTimer -= Time.deltaTime;
 
 	}
 
@@ -54,7 +65,8 @@ public class Move2Left : MiniGame {
 		isJumping = true;
 	}
 
-	private void landed () {
+	public void landed () {
+		Debug.Log ("Landed!");
 		isJumping = false;
 	}
 }

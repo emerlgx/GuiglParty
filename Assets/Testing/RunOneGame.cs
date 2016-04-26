@@ -17,12 +17,12 @@ public class RunOneGame : MonoBehaviour {
 		game = miniGameObject.GetComponent<MiniGame>();
 		Partyer partyer = new Partyer();
 		partyer.setPartyer("test Blooch", Resources.Load("Assets/Characters/blooch") as Sprite);
-		game.partyer = partyer;
+		game.setPartyer(partyer);
 	}
 	
 	void Update () {
 		bool left   = Input.GetKey(KeyCode.A);
-		bool middle = Input.GetKey(KeyCode.S);		
+		bool middle = Input.GetKey(KeyCode.S);
 		bool right  = Input.GetKey(KeyCode.D);
 		InputSet input = new InputSet(left, middle, right);
 

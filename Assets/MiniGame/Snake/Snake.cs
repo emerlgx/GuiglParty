@@ -14,6 +14,7 @@ public class Snake : MiniGame {
 	public float rotateSpeed = 30; // how many degrees a partyer will rotate in one second
 
 	void Start () {
+		inputSet = new InputSet (false, false, false);
 		SnakeHead.gameObject.GetComponent<SnakeFlip> ().snakeGame = this.gameObject;	// tell the snakehead where to provide information
 		makeBeet();												// place a starting beet
 	}
@@ -56,11 +57,12 @@ public class Snake : MiniGame {
 		// start and stop the game based on commands
 	}
 
-	public void setPartyer(Partyer p) {
-		MiniGame:setPartyer (p);
-
+	public override void setPartyer(Partyer p) {
+		partyer = p;
 		// change the sprite to the current player
 		SnakeSprite.sprite = p.face;
+		Debug.Log (partyer.name);
+		Debug.Log("Set Sprite = " + (SnakeSprite.sprite==p.face));
 	}
 
 	public void makeBeet() {
