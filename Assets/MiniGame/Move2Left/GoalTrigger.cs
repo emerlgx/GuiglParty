@@ -4,10 +4,11 @@ using System.Collections;
 public class GoalTrigger : MonoBehaviour {
 	public Move2Left M2LGame;
 
-	void OnCollisionEnter2D(Collision2D coll) {
+	void OnTriggerEnter2D(Collider2D coll) {
 
 		if (coll.gameObject.tag == "Player") {
-			M2LGame.SendMessage ("Goal");
+			Debug.Log ("Found a player!");
+			M2LGame.SendMessage ("goal");
 		}
 	}
 }

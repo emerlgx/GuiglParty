@@ -5,6 +5,8 @@ public class Move2Left : MiniGame {
 	public Rigidbody2D jumper;
 	public JumperController jc;
 	public GoalTrigger gt;
+	public GameObject fallingBusinessPrefab;
+	public GameObject stillBusinessPrefab;
 
 	public Transform respawnPoint;
 
@@ -19,6 +21,14 @@ public class Move2Left : MiniGame {
 
 	void Awake () {
 		inputs = new InputSet (false, false, false);
+
+		// make the business
+		makeFallingBusiness();
+		makeFallingBusiness();
+		makeFallingBusiness();
+		makeStillBusiness ();
+
+
 	}
 
 	void FixedUpdate() {
@@ -63,10 +73,31 @@ public class Move2Left : MiniGame {
 	private void respawn() {
 		jumper.transform.position = respawnPoint.position;
 		isJumping = true;
+		jumpTimer = jumpTimerMax;
 	}
 
 	public void landed () {
 		Debug.Log ("Landed!");
 		isJumping = false;
+	}
+
+	public void goal () {
+		partyer.givePoints(1);
+		respawn ();
+		Debug.Log ("Got a point!");
+	}
+
+	public void makeFallingBusiness () {
+		float temp = Random.Range(-2.0f,1.1f);
+		GameObject tempObj = Instantiate (fallingBusinessPrefab, new Vector3 (temp, 0, 0), Quaternion.identity) as GameObject;
+		tempObj.GetComponent<BusinessFalling> ().Move2LeftGame = this.gameObject;
+		tempObj.transform.SetParent (this.transform,false);
+	}
+
+	public void makeStillBusiness () {
+		float temp = Random.Range(-1.9f,1.1f);
+		GameObject tempObj = Instantiate (stillBusinessPrefab, new Vector3 (temp, -1.6f, 0), Quaternion.identity) as GameObject;
+		tempObj.GetComponent<BusinessStill> ().Move2LeftGame = this.gameObject;
+		tempObj.transform.SetParent (this.transform,false);
 	}
 }
