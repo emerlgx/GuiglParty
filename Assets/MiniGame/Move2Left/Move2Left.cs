@@ -67,7 +67,8 @@ public class Move2Left : MiniGame {
 	}
 
 	public void setPartyer (Partyer p) {
-		MiniGame:setPartyer (p);
+		partyer = p;
+		jumper.GetComponent<SpriteRenderer> ().sprite = p.face;
 	}
 
 	private void respawn() {
