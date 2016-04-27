@@ -3,10 +3,10 @@ using System.Collections;
 
 public class TextureHolder : MonoBehaviour {
 	// References to the RenderTextures
-	private GameObject quadP1;
-	private GameObject quadP2;
-	private GameObject quadP3;
-	private GameObject quadP4;
+	public GameObject quadP1;
+	public GameObject quadP2;
+	public GameObject quadP3;
+	public GameObject quadP4;
 
 	// Indicates if a screen swap is currently happening
 	bool isSwapping2 = false;
@@ -167,8 +167,7 @@ public class TextureHolder : MonoBehaviour {
 			}
 		}
 	}
-
-
+		
 	// Begin swapping the positions of two of the screens
 	public void SwapCameras2(int playerA, int playerB, float duration) {
 

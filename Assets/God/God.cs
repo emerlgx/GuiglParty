@@ -17,6 +17,12 @@ public class God : MonoBehaviour {
 	private TextureHolder swapper;
 	private KeyInput      inputManager;
 
+	// the positions of some screens will change depending on these values
+	public float screenSwapTimeMax = 60.0f;	// max time between swaps
+	public float screenSwapTimeMin = 15.0f;	// minimum time between swaps
+	public float screenSwapDuration = 1.0f;	// how long the actual swap operation will take
+	private float screenSwapCounter;		// holds the time until the next swap
+
 	// Use this for initialization
 	void Awake() {
 		keyboardPlayerMap = new int[4]{ 
@@ -51,6 +57,8 @@ public class God : MonoBehaviour {
 			miniGames[i] = miniGameInstance.GetComponent<MiniGame>();
 			partyers[i]  = new Partyer(names[i], sprites[i], Constants.lights[i], Constants.darks[i]);
 			miniGames[i].setPartyer(partyers[i]);
+
+			screenSwapCounter = UnityEngine.Random.Range (screenSwapTimeMin, screenSwapTimeMax);
 		}
 
 		//InvokeRepeating("updateScore", 0, 1);
@@ -60,12 +68,19 @@ public class God : MonoBehaviour {
 	void Update () {
 		bool iwannaswap = false;
 		//decide whether to swap
+		if (screenSwapCounter <= 0.0f) {
+			iwannaswap = true;
+			screenSwapCounter = UnityEngine.Random.Range (screenSwapTimeMin, screenSwapTimeMax);
+			screenSwap ();
+		} else {
+			screenSwapCounter -= Time.deltaTime;
+		}
+
 		if (iwannaswap) {
 			//if swap: 
-			//  send command to swap
+			//  send command to stop games
 			//  while swapping:
 			//    roll aesop or something
-			int noop = 1;
 		} else {
 			InputSet[] inputs = inputManager.getInputs();
 			Dictionary<MiniGame, InputSet> matchedInputs = organizeInputs(inputs);
@@ -85,5 +100,46 @@ public class God : MonoBehaviour {
 			gameInputs.Add(rightGame, inputs[i]);
 		}
 		return gameInputs;
+	}
+
+	// randomly swap positions of some number of rendertextures
+	void screenSwap() {
+		// choose to swap 2, 3, or 4 screens
+		int rnd = UnityEngine.Random.Range(2,5);
+		switch (rnd) {
+		case 2:
+			int swapA = UnityEngine.Random.Range (1, 4);
+			int swapB = UnityEngine.Random.Range (1, 4);
+			while (swapA == swapB) {
+				swapA = UnityEngine.Random.Range (1, 4);
+				swapB = UnityEngine.Random.Range (1, 4);
+			}
+			swapper.SwapCameras2 (swapA, swapB, screenSwapDuration);
+			break;
+		case 3:
+			// choose the order of the 3 screens to be swapped
+			int[] textures3 = { 1, 2, 3, 4 };
+			Constants.ShuffleArray (textures3);
+			// choose whether to go clockwise or counterclockwise
+			int direction = UnityEngine.Random.Range (0, 1);
+			if (direction == 0) {
+				swapper.SwapCameras3Clockwise (textures3 [0], textures3 [1], textures3 [2], screenSwapDuration);
+			} else { 
+				swapper.SwapCameras3CounterClockwise (textures3 [0], textures3 [1], textures3 [2], screenSwapDuration);
+			}
+			break;
+		case 4:
+			// choose the order of the 3 screens to be swapped
+			int[] textures4 = { 1, 2, 3, 4 };
+			Constants.ShuffleArray (textures4);
+			// choose whether to go clockwise or counterclockwise
+			direction = UnityEngine.Random.Range (0, 1);
+			if (direction == 0) {
+				swapper.SwapCameras4Clockwise (textures4 [0], textures4 [1], textures4 [2], textures4 [3], screenSwapDuration);
+			} else { 
+				swapper.SwapCameras4CounterClockwise (textures4 [0], textures4 [1], textures4 [2], textures4 [3], screenSwapDuration);
+			}
+			break;
+		}
 	}
 }
