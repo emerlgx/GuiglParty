@@ -9,4 +9,4 @@ public static class Constants {
 
 public enum ControlCommand { Start, Stop, /*GoFast, GoSlow*/ };
 
-public enum PartyNames { Guigl, Ubaldino, Walusneaki, Blooch };
+public enum PartyNames { Guigl=0, Ubaldino, Walusneaki, Blooch };

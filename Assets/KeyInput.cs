@@ -36,19 +36,22 @@ public class InputSet {
 }
 
 public class KeyInput : MonoBehaviour {
-	public GameObject audioObject;
-	private UnitySynthTest audioScript;
+	//public GameObject      audioObject;
+	//private UnitySynthTest audioScript;
 
-	static private InputRange[] ranges = new InputRange[4] {
-		new InputRange(6), new InputRange(12), new InputRange(32), new InputRange(54)
-	};
+	static private InputRange[] ranges;
 
-	// Use this for initialization
-	void Start () {
-		audioScript = audioObject.GetComponent<UnitySynthTest>();
+	void Awake(){
+		int keyBottom = 36;
+		int keyTop    = 96; 
+
+		ranges = new InputRange[4];
+		for (int i = 0; i < 4; i++) {
+			ranges[i] = new InputRange(keyBottom + 6 + 12 * i);
+		}
+	//	audioScript = audioObject.GetComponent<UnitySynthTest>();
 	}
-	
-	// Update is called once per frame
+		
 	public InputSet[] getInputs() {
 		InputSet[] sectionInputs = new InputSet[4];
 

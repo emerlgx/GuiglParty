@@ -7,6 +7,7 @@ public class RunOneGame : MonoBehaviour {
 	public Sprite playerSprite;
 	public GameObject miniGameObjectTemplate;
 	private MiniGame game;
+	private Partyer partyer;
 
 	void Start () {
 		GameObject miniGameObject = Instantiate(miniGameObjectTemplate);
@@ -16,16 +17,23 @@ public class RunOneGame : MonoBehaviour {
 		miniGameObject.transform.SetParent(gameCamera.transform);
 
 		game = miniGameObject.GetComponent<MiniGame>();
-		Partyer partyer = new Partyer();
-		partyer.setPartyer("test Blooch", playerSprite);
+		partyer = new Partyer();
+		partyer.setPartyer("walusneaki", playerSprite);
 		game.partyer = partyer;
+
+		InvokeRepeating("updateScore", 0, 1);
 	}
 	
 	void Update () {
 		bool left   = Input.GetKey(KeyCode.A);
-		bool middle = Input.GetKey(KeyCode.S);		
+		bool middle = Input.GetKey(KeyCode.S);
 		bool right  = Input.GetKey(KeyCode.D);
 		InputSet input = new InputSet(left, middle, right);
 		game.tick(input);
+	}
+
+	void updateScore() {
+		GameObject scoreText = transform.FindChild("ScoreText").gameObject;
+		scoreText.GetComponent<TextMesh>().text = "Score: " + partyer.getScore();
 	}
 }
