@@ -31,7 +31,7 @@ public class InputSet {
 		if (left)   ins.Add("l"); 
 		if (middle) ins.Add("m"); 
 		if (right)  ins.Add("r");
-		Debug.Log("INPUT: ("+ String.Join(", ", ins.ToArray()) +")");
+		//Debug.Log("INPUT: ("+ String.Join(", ", ins.ToArray()) +")");
 	}
 }
 
