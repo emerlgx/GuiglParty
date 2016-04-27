@@ -68,7 +68,7 @@ public class Move2Left : MiniGame {
 		// do the mario!
 	}
 
-	public void setPartyer (Partyer p) {
+	public override void setPartyer (Partyer p) {
 		partyer = p;
 		// change the sprite to the current player
 		jumpSprite.sprite = partyer.face;
