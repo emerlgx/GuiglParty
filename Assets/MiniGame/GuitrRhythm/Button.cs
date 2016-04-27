@@ -8,6 +8,7 @@ public class Button : MonoBehaviour {
 	private CircleCollider2D detector;
 	private SpriteRenderer partyFace;
 	private bool noteHere;
+	private Vector3 rotationVector;
 
 	// Use this for initialization
 	void Awake () {
@@ -29,6 +30,12 @@ public class Button : MonoBehaviour {
 //		Debug.Log ("start: detector is null: "+ (detector == null));
 //		Debug.Log ("start: partyFace is null: "+ (detector == null));
 		noteHere = false;
+
+		rotationVector = new Vector3(0, 0, 3);
+	}
+
+	void Update() {
+		transform.Rotate(rotationVector);
 	}
 
 	void OnTriggerEnter2D(Collider2D note) {
@@ -51,7 +58,7 @@ public class Button : MonoBehaviour {
 		} else if (noteHere && !isActive ()) {
 			points = -1;
 		} else if (!noteHere && isActive ()) {
-			points = -3;
+			points = -10;
 		} else {
 			points = 0;
 		}
