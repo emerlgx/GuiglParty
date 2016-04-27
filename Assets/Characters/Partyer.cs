@@ -14,4 +14,16 @@ public class Partyer {
 		name = name_;
 		face = face_;
 	}
+
+	public void givePoints(int points) {
+		score += points;
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	void Update(){
+		Debug.Log(name + "'s score: "+score);
+	}
 }
