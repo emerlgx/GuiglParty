@@ -3,6 +3,7 @@ using System.Collections;
 
 public class Move2Left : MiniGame {
 	public Rigidbody2D jumper;
+	public SpriteRenderer jumpSprite;
 	public JumperController jc;
 	public GoalTrigger gt;
 	public GameObject fallingBusinessPrefab;
@@ -70,7 +71,7 @@ public class Move2Left : MiniGame {
 	public void setPartyer (Partyer p) {
 		partyer = p;
 		// change the sprite to the current player
-		jumper.GetComponent<SpriteRenderer>().sprite = p.face;
+		jumpSprite.sprite = partyer.face;
 		Debug.Log (partyer.name);
 		Debug.Log("Set Sprite = " + (jumper.GetComponent<SpriteRenderer>().sprite==p.face));
 	}

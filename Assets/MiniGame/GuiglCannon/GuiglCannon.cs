@@ -1,15 +1,63 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GuiglCannon : MonoBehaviour {
+public class GuiglCannon : MiniGame {
+	public GameObject cannonballPrefab;
+	public GameObject cannon;
 
-	// Use this for initialization
-	void Start () {
-	
+
+	public float cannonSpeed = 10.0f;
+	public float cannonReloadTime = 1.0f;
+	float cannonReloadTimeMax = 1.0f;
+
+
+	public int pointsToGive = 20;
+	InputSet inputs;
+
+	void Awake () {
+		inputs = new InputSet (false, false, false);
+		cannonReloadTimeMax = cannonReloadTime;
+		cannonReloadTime = 0.0f;
+
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+
+	void FixedUpdate() {
+		if (inputs.left) {
+			
+		}
+
+		if (inputs.right) {
+			
+		}
+
+		if (inputs.middle && cannonReloadTime <= 0.0f) {
+			shootCannon();
+		}
+
+		cannonReloadTime -= Time.deltaTime;
+
 	}
+
+	public override void tick (InputSet input) {
+		inputs = input;
+	}
+
+	public override void control (ControlCommand command) {
+		// beep boop
+	}
+
+	public void setPartyer (Partyer p) {
+		partyer = p;
+	}
+
+	void shootCannon () {
+
+
+		cannonReloadTime = cannonReloadTimeMax;
+	}
+
+	void hitTarget() {
+		partyer.givePoints (pointsToGive);
+	}
+
 }

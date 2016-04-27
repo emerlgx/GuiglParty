@@ -8,15 +8,15 @@ public class BusinessFalling : MonoBehaviour {
 	public float speed = 3.0f;
 
 	void Start() {
-		transform.position = new Vector3(transform.position.x,startHeight,transform.position.z);
+		transform.localPosition = new Vector3(transform.localPosition.x,startHeight,transform.localPosition.z);
 
 	}
 
 	void FixedUpdate() {
 		transform.Translate(new Vector3(0,-Time.deltaTime * speed,0));
 
-		if(transform.position.y < startHeight - distance) {
-			transform.position = new Vector3(transform.position.x,startHeight,transform.position.z);
+		if(transform.localPosition.y < startHeight - distance) {
+			transform.localPosition = new Vector3(transform.localPosition.x,startHeight,transform.localPosition.z);
 		}
 	}
 
