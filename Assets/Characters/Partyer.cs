@@ -5,14 +5,15 @@ public class Partyer {
 	public int score;
 	public Sprite face;
 	public string name;
+	public Color lightCol;
+	public Color darkCol;
 
-	void Start() {
-		score = 0;
-	}
-
-	public void setPartyer(string name_, Sprite face_) {
-		name = name_;
-		face = face_;
+	public Partyer(string name_, Sprite face_, Color lc, Color dc) {
+		name     = name_;
+		face     = face_;
+		lightCol = lc;
+		darkCol  = dc;
+		score    = 0;
 	}
 
 	public void givePoints(int points) {

@@ -17,8 +17,7 @@ public class RunOneGame : MonoBehaviour {
 		miniGameObject.transform.SetParent(gameCamera.transform);
 
 		game = miniGameObject.GetComponent<MiniGame>();
-		partyer = new Partyer();
-		partyer.setPartyer("walusneaki", playerSprite);
+		partyer = new Partyer("derberg", playerSprite, Constants.lights[4], Constants.darks[4]);
 		game.partyer = partyer;
 
 		InvokeRepeating("updateScore", 0, 1);

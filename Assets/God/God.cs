@@ -49,9 +49,8 @@ public class God : MonoBehaviour {
 			miniGameInstance.transform.SetParent(gameCams[i].transform);
 
 			miniGames[i] = miniGameInstance.GetComponent<MiniGame>();
-			partyers[i]  = new Partyer();
-			partyers[i].setPartyer(names[i], sprites[i]);
-			miniGames[i].partyer = partyers[i];
+			partyers[i]  = new Partyer(names[i], sprites[i], Constants.lights[i], Constants.darks[i]);
+			miniGames[i].setPartyer(partyers[i]);
 
 		}
 
