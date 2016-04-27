@@ -51,7 +51,6 @@ public class God : MonoBehaviour {
 			miniGames[i] = miniGameInstance.GetComponent<MiniGame>();
 			partyers[i]  = new Partyer(names[i], sprites[i], Constants.lights[i], Constants.darks[i]);
 			miniGames[i].setPartyer(partyers[i]);
-
 		}
 
 		//InvokeRepeating("updateScore", 0, 1);
