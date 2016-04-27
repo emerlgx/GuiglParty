@@ -17,6 +17,9 @@ public class God : MonoBehaviour {
 	private TextureHolder swapper;
 	private KeyInput      inputManager;
 
+	private GameObject scoreTemplate;
+	private GameObject[] scoreBoards;
+
 	// Use this for initialization
 	void Awake() {
 		keyboardPlayerMap = new int[4]{ 
@@ -36,9 +39,22 @@ public class God : MonoBehaviour {
 		}
 
 		partyers = new Partyer[4];
+		for (int i = 0; i < 4; i++) {
+			partyers [i] = new Partyer (names [i], sprites [i], Constants.lights [i], Constants.darks [i]);
+		}
+
+		scoreTemplate = transform.FindChild("scoreDisplayTemplate").gameObject;
+		scoreBoards   = new GameObject[4];
 	}
 
 	void Start() {
+		Vector3[] scoreBoardPosns = new Vector3[4] {
+			new Vector3(-4.6f,  3.3f, 0f),
+			new Vector3( 4.6f,  3.3f, 0f),
+			new Vector3(-4.6f, -3.3f, 0f),
+			new Vector3( 4.6f, -3.3f, 0f)
+		};
+
 		System.Random rnd = new System.Random();
 		for (int i = 0; i < 4; i++) {
 			GameObject miniGameInstance = Instantiate(allGames[rnd.Next(allGames.Length)]);
@@ -49,8 +65,12 @@ public class God : MonoBehaviour {
 			miniGameInstance.transform.SetParent(gameCams[i].transform);
 
 			miniGames[i] = miniGameInstance.GetComponent<MiniGame>();
-			partyers[i]  = new Partyer(names[i], sprites[i], Constants.lights[i], Constants.darks[i]);
 			miniGames[i].setPartyer(partyers[i]);
+
+			scoreBoards[i] = Instantiate(scoreTemplate) as GameObject;
+			scoreBoards[i].transform.localPosition = scoreBoardPosns[i];
+			scoreBoards[i].GetComponent<ScoreDisplay>().assignPlayer(partyers[i]);
+			Debug.Log("Assigned scorboard "+i);
 		}
 
 		//InvokeRepeating("updateScore", 0, 1);

@@ -13,11 +13,11 @@ public static class Constants {
 		new Color(191f/255, 106f/255,  30f/255, 1)
 	};
 	public static readonly Color[] darks = new Color[5] {
-		new Color(255f/255,   5f/255,   5f/255, 1),
 		new Color(  7f/255, 195f/255,  20f/255, 1),
+		new Color(255f/255,   5f/255,   5f/255, 1),
 		new Color(152f/255,  18f/255, 155f/255, 1),
 		new Color( 28f/255,  46f/255, 179f/255, 1),
-		new Color(246f/255, 243f/255,  16f/255, 1),
+		new Color(246f/255, 243f/255,  16f/255, 1)
 	};
 }
 
