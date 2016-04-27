@@ -8,9 +8,9 @@ public class gourdshuffle : MonoBehaviour {
 	public float offset = 0;
 
 	void Update () {
-		Vector3 tempPos = this.transform.position;
+		Vector3 tempPos = this.transform.localPosition;
 		tempPos.y = offset + distance * Mathf.Sin (startpos * Mathf.PI);
-		this.transform.position = tempPos;
+		this.transform.localPosition = tempPos;
 		startpos = (startpos + Time.deltaTime*speed) % (2);
 	}
 }

@@ -13,6 +13,8 @@ public class Snake : MiniGame {
 	public float maxAngularVelocity = 30; 
 	public float rotateSpeed = 30; // how many degrees a partyer will rotate in one second
 
+	public int pointsToGive = 10;
+
 	void Start () {
 		inputSet = new InputSet (false, false, false);
 		SnakeHead.gameObject.GetComponent<SnakeFlip> ().snakeGame = this.gameObject;	// tell the snakehead where to provide information
@@ -74,7 +76,7 @@ public class Snake : MiniGame {
 
 	public void eatBeet() {
 		// give the player points for eating the beet
-		partyer.givePoints(1);
+		partyer.givePoints(pointsToGive);
 		makeBeet ();
 	}
 }

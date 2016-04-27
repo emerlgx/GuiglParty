@@ -7,6 +7,7 @@ public class GuiglHoops : MiniGame {
 	public GameObject leftSpawn;
 	public GameObject rightSpawn;
 	public GameObject guiglBallPrefab;
+	public int pointsToGive = 10;
 	public float launchSpeed = 100.0f;
 	public float launchSpeedModifier = 100.0f;
 
@@ -67,14 +68,10 @@ public class GuiglHoops : MiniGame {
 	public override void setPartyer (Partyer p) {
 		// updates the partyer
 		partyer = p;
-		if (partyer.face != null) {
-			foreach (GameObject ball in guigls) {
-				if (ball) {
-					ball.GetComponent<SpriteRenderer> ().sprite = partyer.face;
-				}
+		foreach (GameObject ball in guigls) {
+			if (ball) {
+				ball.GetComponent<SpriteRenderer> ().sprite = partyer.face;
 			}
-		} else {
-			Debug.LogError ("I have no face!");
 		}
 	}
 
@@ -95,6 +92,6 @@ public class GuiglHoops : MiniGame {
 	}
 
 	public void dunk() {
-		partyer.givePoints (1);
+		partyer.givePoints (pointsToGive);
 	}
 }

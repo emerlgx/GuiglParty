@@ -13,6 +13,8 @@ public class Move2Left : MiniGame {
 	public float moveSpeed = 5;
 	public float jumpPower = 100;
 
+	public int pointsToGive = 10;
+
 	float jumpTimer = 1.0f;
 	float jumpTimerMax = 1.0f;
 
@@ -67,11 +69,10 @@ public class Move2Left : MiniGame {
 
 	public void setPartyer (Partyer p) {
 		partyer = p;
-		if (partyer.face != null) {
-			jumper.GetComponent<SpriteRenderer> ().sprite = p.face;
-		} else {
-			Debug.LogError ("I have no face!");
-		}
+		// change the sprite to the current player
+		jumper.GetComponent<SpriteRenderer>().sprite = p.face;
+		Debug.Log (partyer.name);
+		Debug.Log("Set Sprite = " + (jumper.GetComponent<SpriteRenderer>().sprite==p.face));
 	}
 
 	private void respawn() {
