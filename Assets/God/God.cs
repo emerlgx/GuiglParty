@@ -23,6 +23,13 @@ public class God : MonoBehaviour {
 	public float screenSwapDuration = 1.0f;	// how long the actual swap operation will take
 	private float screenSwapCounter;		// holds the time until the next swap
 
+	// screens will flip upside-down depending on these values
+	public float screenFlipTimeMax = 60.0f;	// max time between swaps
+	public float screenFlipTimeMin = 15.0f;	// minimum time between swaps
+	public float screenFlipDuration = 1.0f;	// how long the actual swap operation will take
+	private float screenFlipCounter;		// holds the time until the next swap
+	private bool[] isFlipped = {false,false,false,false};
+
 	// Use this for initialization
 	void Awake() {
 		keyboardPlayerMap = new int[4]{ 
@@ -59,6 +66,7 @@ public class God : MonoBehaviour {
 			miniGames[i].setPartyer(partyers[i]);
 
 			screenSwapCounter = UnityEngine.Random.Range (screenSwapTimeMin, screenSwapTimeMax);
+			screenFlipCounter = UnityEngine.Random.Range (screenFlipTimeMin, screenFlipTimeMax);
 		}
 
 		//InvokeRepeating("updateScore", 0, 1);
@@ -67,13 +75,20 @@ public class God : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		bool iwannaswap = false;
-		//decide whether to swap
+		// decide whether to swap
 		if (screenSwapCounter <= 0.0f) {
-			iwannaswap = true;
 			screenSwapCounter = UnityEngine.Random.Range (screenSwapTimeMin, screenSwapTimeMax);
 			screenSwap ();
 		} else {
 			screenSwapCounter -= Time.deltaTime;
+		}
+
+		// decide whether to flip
+		if (screenFlipCounter <= 0.0f) {
+			screenFlipCounter = UnityEngine.Random.Range (screenFlipTimeMin, screenFlipTimeMax);
+			quadFlip ();
+		} else {
+			screenFlipCounter -= Time.deltaTime;
 		}
 
 		if (iwannaswap) {
@@ -141,5 +156,20 @@ public class God : MonoBehaviour {
 			}
 			break;
 		}
+	}
+
+	void quadFlip() {
+		bool[] flipper = { UnityEngine.Random.value > 0.5f, 
+			UnityEngine.Random.value > 0.5f, 
+			UnityEngine.Random.value > 0.5f, 
+			UnityEngine.Random.value > 0.5f };
+		
+		swapper.flipScreens(flipper[0],flipper[1],flipper[2],flipper[3], screenFlipDuration);
+		for(int i=0; i < 4; i++) {
+			if (flipper [i]) {
+				isFlipped [i] = !isFlipped [i];
+			}
+		}
+
 	}
 }

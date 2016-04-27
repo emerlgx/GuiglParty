@@ -28,10 +28,10 @@ public class TextureHolder : MonoBehaviour {
 	float flipDuration;
 	float maxFlipDuration;
 	bool isFlipping = false;
-	bool isFlipping1P = false;
-	bool isFlipping2P = false;
-	bool isFlipping3P = false;
-	bool isFlipping4P = false;
+	bool isFlipping1P = false; bool isFlipped1P = false;
+	bool isFlipping2P = false; bool isFlipped2P = false;
+	bool isFlipping3P = false; bool isFlipped3P = false;
+	bool isFlipping4P = false; bool isFlipped4P = false;
 
 	// Use this for initialization
 	void Start () {
@@ -63,20 +63,28 @@ public class TextureHolder : MonoBehaviour {
 			if (flipDuration <= 0.0f) {
 				isFlipping = false;
 
-				if (quadP1.transform.rotation.z >= 270.0f || quadP1.transform.rotation.z <= 90.0f) {
+				if (isFlipped1P) {
+					quadP1.transform.rotation = Quaternion.AngleAxis (180, Vector3.forward);
+				} else {
 					quadP1.transform.rotation = Quaternion.AngleAxis (0, Vector3.forward);
 				}
-				if (quadP2.transform.rotation.z >= 270.0f || quadP2.transform.rotation.z <= 90.0f) {
+				if (isFlipped2P) {
+					quadP2.transform.rotation = Quaternion.AngleAxis (180, Vector3.forward);
+				} else {
 					quadP2.transform.rotation = Quaternion.AngleAxis (0, Vector3.forward);
 				}
-				if (quadP3.transform.rotation.z >= 270.0f || quadP3.transform.rotation.z <= 90.0f) {
+				if (isFlipped3P) {
+					quadP3.transform.rotation = Quaternion.AngleAxis (180, Vector3.forward);
+				} else {
 					quadP3.transform.rotation = Quaternion.AngleAxis (0, Vector3.forward);
 				}
-				if (quadP4.transform.rotation.z >= 270.0f || quadP4.transform.rotation.z <= 90.0f) {
+				if (isFlipped4P) {
+					quadP4.transform.rotation = Quaternion.AngleAxis (180, Vector3.forward);
+				} else {
 					quadP4.transform.rotation = Quaternion.AngleAxis (0, Vector3.forward);
 				}
 					
-				if (quadP1.transform.rotation.z < 270.0f && quadP1.transform.rotation.z > 90.0f) {
+				/*if (quadP1.transform.rotation.z < 270.0f && quadP1.transform.rotation.z > 90.0f) {
 					quadP1.transform.rotation = Quaternion.AngleAxis (180, Vector3.forward);
 				}
 				if (quadP2.transform.rotation.z < 270.0f && quadP2.transform.rotation.z > 90.0f) {
@@ -87,7 +95,7 @@ public class TextureHolder : MonoBehaviour {
 				}
 				if (quadP4.transform.rotation.z < 270.0f && quadP4.transform.rotation.z > 90.0f) {
 					quadP4.transform.rotation = Quaternion.AngleAxis (180, Vector3.forward);
-				}
+				}*/
 
 				//SendMessageUpwards ("DoneFlipping");
 			}
@@ -427,6 +435,11 @@ public class TextureHolder : MonoBehaviour {
 		isFlipping2P = p2;
 		isFlipping3P = p3;
 		isFlipping4P = p4;
+
+		if (isFlipping1P) { isFlipped1P = !isFlipped1P;}
+		if (isFlipping2P) { isFlipped2P = !isFlipped2P;}
+		if (isFlipping3P) { isFlipped3P = !isFlipped3P;}
+		if (isFlipping4P) { isFlipped4P = !isFlipped4P;}
 
 		flipDuration = duration;
 		maxFlipDuration = duration;
