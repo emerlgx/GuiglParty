@@ -4,6 +4,7 @@ using System.Diagnostics;
 
 public class RunOneGame : MonoBehaviour {
 	public GameObject gameCamera;
+	public Sprite playerSprite;
 	public GameObject miniGameObjectTemplate;
 	private MiniGame game;
 
@@ -16,7 +17,7 @@ public class RunOneGame : MonoBehaviour {
 
 		game = miniGameObject.GetComponent<MiniGame>();
 		Partyer partyer = new Partyer();
-		partyer.setPartyer("test Blooch", Resources.Load("Assets/Characters/blooch") as Sprite);
+		partyer.setPartyer("test Blooch", playerSprite);
 		game.partyer = partyer;
 	}
 	
@@ -25,7 +26,6 @@ public class RunOneGame : MonoBehaviour {
 		bool middle = Input.GetKey(KeyCode.S);		
 		bool right  = Input.GetKey(KeyCode.D);
 		InputSet input = new InputSet(left, middle, right);
-
 		game.tick(input);
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using MidiJack;
@@ -23,6 +24,14 @@ public class InputSet {
 		left   = l;
 		middle = m;
 		right  = r;
+	}
+
+	public void debug(){
+		List<string> ins = new List<string>();
+		if (left)   ins.Add("l"); 
+		if (middle) ins.Add("m"); 
+		if (right)  ins.Add("r");
+		Debug.Log("INPUT: ("+ String.Join(", ", ins.ToArray()) +")");
 	}
 }
 
