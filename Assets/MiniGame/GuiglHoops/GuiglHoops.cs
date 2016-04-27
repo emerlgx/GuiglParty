@@ -67,22 +67,31 @@ public class GuiglHoops : MiniGame {
 	public override void setPartyer (Partyer p) {
 		// updates the partyer
 		partyer = p;
+		if (partyer.face != null) {
+			foreach (GameObject ball in guigls) {
+				if (ball) {
+					ball.GetComponent<SpriteRenderer> ().sprite = partyer.face;
+				}
+			}
+		} else {
+			Debug.LogError ("I have no face!");
+		}
 	}
 
 	public void spawnLeft() {
 		GameObject ball = Instantiate (guiglBallPrefab, leftSpawn.transform.position, Quaternion.identity) as GameObject;
 		float modifier = Random.Range (-1.0f * launchSpeedModifier, launchSpeedModifier);
 		ball.GetComponent<Rigidbody2D> ().AddForce (Vector2.right * (launchSpeed+modifier));
+		ball.GetComponent<SpriteRenderer> ().sprite = partyer.face;
 		guigls.Add (ball);
-		Debug.Log ("made a guigl!");
 	}
 
 	public void spawnRight() {
 		GameObject ball = Instantiate (guiglBallPrefab, rightSpawn.transform.position, Quaternion.identity) as GameObject;
 		float modifier = Random.Range (-1.0f * launchSpeedModifier, launchSpeedModifier);
 		ball.GetComponent<Rigidbody2D> ().AddForce (Vector2.left * (launchSpeed+modifier));
+		ball.GetComponent<SpriteRenderer> ().sprite = partyer.face;
 		guigls.Add (ball);
-		Debug.Log ("made a guigl!");
 	}
 
 	public void dunk() {

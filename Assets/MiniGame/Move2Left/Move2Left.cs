@@ -47,7 +47,6 @@ public class Move2Left : MiniGame {
 		}
 
 		if (inputs.middle && (!isJumping || jumpTimer <= 0.0f)) {
-			Debug.Log("Going Up!");
 			jumper.AddForce(Vector2.up * moveSpeed, ForceMode2D.Impulse);
 
 			isJumping = true;
@@ -68,7 +67,11 @@ public class Move2Left : MiniGame {
 
 	public void setPartyer (Partyer p) {
 		partyer = p;
-		jumper.GetComponent<SpriteRenderer> ().sprite = p.face;
+		if (partyer.face != null) {
+			jumper.GetComponent<SpriteRenderer> ().sprite = p.face;
+		} else {
+			Debug.LogError ("I have no face!");
+		}
 	}
 
 	private void respawn() {
@@ -78,7 +81,6 @@ public class Move2Left : MiniGame {
 	}
 
 	public void landed () {
-		Debug.Log ("Landed!");
 		isJumping = false;
 	}
 
