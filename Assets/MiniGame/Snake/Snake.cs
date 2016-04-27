@@ -26,16 +26,10 @@ public class Snake : MiniGame {
 		// check the controls
 		if (inputSet.left && SnakeHead.angularVelocity <= maxAngularVelocity) {
 			SnakeHead.transform.Rotate(Vector3.forward * rotateSpeed * Time.deltaTime);
-			//Vector2 velocity = SnakeHead.velocity;
-			//SnakeHead.velocity = SnakeHead.transform.InverseTransformVector(Vector2.up/8) * velocity.magnitude;
-			Debug.Log ("turned left!");
 		}
 
 		if (inputSet.right && SnakeHead.angularVelocity <= maxAngularVelocity) {
 			SnakeHead.transform.Rotate(-1.0f * Vector3.forward * rotateSpeed * Time.deltaTime);
-			//Vector2 velocity = SnakeHead.velocity;
-			//SnakeHead.velocity = SnakeHead.transform.InverseTransformVector(Vector2.up/8) * velocity.magnitude;
-			Debug.Log ("Turned right!");
 		}
 
 		if (!inputSet.left && !inputSet.right) {

@@ -46,7 +46,7 @@ public class GuiglCannon : MiniGame {
 		// beep boop
 	}
 
-	public void setPartyer (Partyer p) {
+	public override void setPartyer (Partyer p) {
 		partyer = p;
 	}
 

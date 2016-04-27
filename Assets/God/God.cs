@@ -20,6 +20,14 @@ public class God : MonoBehaviour {
 	private GameObject scoreTemplate;
 	private GameObject[] scoreBoards;
 
+	// the positions of some screens will change depending on these values
+	public float screenSwapTimeMax = 60.0f;	// max time between swaps
+	public float screenSwapTimeMin = 15.0f;	// minimum time between swaps
+	public float screenSwapDuration = 1.0f;	// how long the actual swap operation will take
+	private float screenSwapCounter;		// holds the time until the next swap
+
+	public float afterSwapPause = 1.0f;
+
 	// Use this for initialization
 	void Awake() {
 		keyboardPlayerMap = new int[4]{ 
@@ -71,22 +79,19 @@ public class God : MonoBehaviour {
 			scoreBoards[i].transform.localPosition = scoreBoardPosns[i];
 			scoreBoards[i].GetComponent<ScoreDisplay>().assignPlayer(partyers[i]);
 			Debug.Log("Assigned scorboard "+i);
-		}
 
-		//InvokeRepeating("updateScore", 0, 1);
+			screenSwapCounter = UnityEngine.Random.Range(screenSwapTimeMin, screenSwapTimeMax);
+		}
 	}
 
 	// Update is called once per frame
 	void Update () {
-		bool iwannaswap = false;
 		//decide whether to swap
-		if (iwannaswap) {
-			//if swap: 
-			//  send command to swap
-			//  while swapping:
-			//    roll aesop or something
-			int noop = 1;
+		if (screenSwapCounter <= 0.0f) {
+			screenSwapCounter = UnityEngine.Random.Range(screenSwapTimeMin, screenSwapTimeMax);
+			swapSomething();
 		} else {
+			screenSwapCounter -= Time.deltaTime;
 			InputSet[] inputs = inputManager.getInputs();
 			Dictionary<MiniGame, InputSet> matchedInputs = organizeInputs(inputs);
 			foreach (GameObject camera in gameCams) {
@@ -106,4 +111,34 @@ public class God : MonoBehaviour {
 		}
 		return gameInputs;
 	}
+
+	void swapSomething(){
+		int[] swappers = choosePlayers();
+
+		for (int i = 0; i < 4; i++) {
+			if (Array.IndexOf(swappers, i) < 0)
+				continue;
+			miniGames[i].setInSwap(true); 
+		} 
+
+		if (true) {
+			swapper.SwapCameras(swappers, screenSwapDuration);
+		}
+		for (int i = 0; i < 4; i++) {
+			if (Array.IndexOf(swappers, i) < 0)
+				continue;
+			miniGames[i].setInSwap(false); 
+		} 
+	}
+
+	int[] choosePlayers(){
+		int numToSwitch = UnityEngine.Random.Range(2,5);
+		int[] order = { 0, 1, 2, 3 };
+		Constants.ShuffleArray(order);
+		int[] swappers = new int[numToSwitch];
+		Array.Copy(order, 0, swappers, 0, numToSwitch);
+		return swappers;
+	}
+
+	// randomly swap positions of some number of rendertextures
 }

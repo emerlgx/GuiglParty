@@ -3,431 +3,123 @@ using System.Collections;
 
 public class TextureHolder : MonoBehaviour {
 	// References to the RenderTextures
-	private GameObject quadP1;
-	private GameObject quadP2;
-	private GameObject quadP3;
-	private GameObject quadP4;
+	private GameObject[] quads;
 
 	// Indicates if a screen swap is currently happening
-	bool isSwapping2 = false;
-	bool isSwapping3 = false;
-	bool isSwapping4 = false;
+	int howManySwapping = 0;
+	bool[] isFlipping;
 
 	// Values associated with a screen position swap
 	float swapDuration;
-	GameObject swapA;
-	GameObject swapB;
-	GameObject swapC;
-	GameObject swapD;
-	Vector3 goalPosA;
-	Vector3 goalPosB;
-	Vector3 goalPosC;
-	Vector3 goalPosD;
+	GameObject[] swappingTextures;
+
+	Vector3[] goalPosns;
 
 	// Values associated with a screen flip
 	float flipDuration;
 	float maxFlipDuration;
-	bool isFlipping = false;
-	bool isFlipping1P = false;
-	bool isFlipping2P = false;
-	bool isFlipping3P = false;
-	bool isFlipping4P = false;
+	bool isAnyFlipping = false;
+
+	void Awake(){
+		isFlipping = new bool[4]{ false, false, false, false };
+		quads = new GameObject[4];
+		swappingTextures = new GameObject[4];
+		goalPosns = new Vector3[4];
+	}
 
 	// Use this for initialization
-	void Start () {
-
-		//SwapCameras4Clockwise (1, 2, 4, 3, 1.0f);
-		//flipScreens(true,false,true,true,0.5f);
+	void Start() {
+		for (int i = 0; i < 4; i++) {
+			quads[i] = transform.FindChild("Q"+(i+1)+"Texture").gameObject;
+		}
 	}
-	
+
+
 	// change position of the screens based on given instructions
 	void Update () {
-
 		// if a flip is in progress, do the rotation here
-		if (isFlipping) {
-			if (isFlipping1P) {
-				quadP1.transform.rotation *= Quaternion.AngleAxis(180 * Time.deltaTime / maxFlipDuration, Vector3.forward);
-			}
-			if (isFlipping2P) {
-				quadP2.transform.rotation *= Quaternion.AngleAxis(180 * Time.deltaTime / maxFlipDuration, Vector3.forward);
-			}
-			if (isFlipping3P) {
-				quadP3.transform.rotation *= Quaternion.AngleAxis(180 * Time.deltaTime / maxFlipDuration, Vector3.forward);
-			}
-			if (isFlipping4P) {
-				quadP4.transform.rotation *= Quaternion.AngleAxis(180 * Time.deltaTime / maxFlipDuration, Vector3.forward);
-			}
+		if (isAnyFlipping) {
+			for (int i = 0; i < 4; i++) {
+				if (!isFlipping [i])
+					continue;
+				quads[i].transform.rotation *= Quaternion.AngleAxis(180 * Time.deltaTime / maxFlipDuration, Vector3.forward);
 
+			}
 			// flip is almost finished, snap to the correct value
 			flipDuration -= Time.deltaTime;
 			if (flipDuration <= 0.0f) {
-				isFlipping = false;
+				isAnyFlipping = false;
 
-				if (quadP1.transform.rotation.z >= 270.0f || quadP1.transform.rotation.z <= 90.0f) {
-					quadP1.transform.rotation = Quaternion.AngleAxis (0, Vector3.forward);
+				for (int i = 0; i < 4; i++) {
+					float angle = quads [i].transform.rotation.z;
+					if (angle >= 270.0f || angle <= 90.0f) {
+						quads[i].transform.rotation = Quaternion.AngleAxis (0, Vector3.forward);
+					}
+					if (angle < 270.0f && angle > 90.0f) {
+						quads[i].transform.rotation = Quaternion.AngleAxis (180, Vector3.forward);
+					}
 				}
-				if (quadP2.transform.rotation.z >= 270.0f || quadP2.transform.rotation.z <= 90.0f) {
-					quadP2.transform.rotation = Quaternion.AngleAxis (0, Vector3.forward);
-				}
-				if (quadP3.transform.rotation.z >= 270.0f || quadP3.transform.rotation.z <= 90.0f) {
-					quadP3.transform.rotation = Quaternion.AngleAxis (0, Vector3.forward);
-				}
-				if (quadP4.transform.rotation.z >= 270.0f || quadP4.transform.rotation.z <= 90.0f) {
-					quadP4.transform.rotation = Quaternion.AngleAxis (0, Vector3.forward);
-				}
-					
-				if (quadP1.transform.rotation.z < 270.0f && quadP1.transform.rotation.z > 90.0f) {
-					quadP1.transform.rotation = Quaternion.AngleAxis (180, Vector3.forward);
-				}
-				if (quadP2.transform.rotation.z < 270.0f && quadP2.transform.rotation.z > 90.0f) {
-					quadP2.transform.rotation = Quaternion.AngleAxis (180, Vector3.forward);
-				}
-				if (quadP3.transform.rotation.z < 270.0f && quadP3.transform.rotation.z > 90.0f) {
-					quadP3.transform.rotation = Quaternion.AngleAxis (180, Vector3.forward);
-				}
-				if (quadP4.transform.rotation.z < 270.0f && quadP4.transform.rotation.z > 90.0f) {
-					quadP4.transform.rotation = Quaternion.AngleAxis (180, Vector3.forward);
-				}
-
-				//SendMessageUpwards ("DoneFlipping");
 			}
-			
 		}
 
 		// if a swap is in progress, do the movement here
-		if (isSwapping2) {
-			swapA.transform.position = new Vector3 (Mathf.Lerp (swapA.transform.position.x, goalPosA.x, Time.deltaTime / swapDuration),
-				Mathf.Lerp (swapA.transform.position.y, goalPosA.y, Time.deltaTime / swapDuration),
-				Mathf.Lerp (swapA.transform.position.z, goalPosA.z, Time.deltaTime / swapDuration));
-			
-			swapB.transform.position = new Vector3 (Mathf.Lerp (swapB.transform.position.x, goalPosB.x, Time.deltaTime / swapDuration),
-				Mathf.Lerp (swapB.transform.position.y, goalPosB.y, Time.deltaTime / swapDuration),
-				Mathf.Lerp (swapB.transform.position.z, goalPosB.z, Time.deltaTime / swapDuration));
-
-			swapDuration -= Time.deltaTime;
-
-			// swap should be almost finished, set everything to be in the correct position
-			if (swapDuration <= 0) {
-				swapA.transform.position = goalPosA;
-				swapB.transform.position = goalPosB;
-				isSwapping2 = false;
-				//SendMessageUpwards ("DoneSwapping");
+		if (howManySwapping > 0) {
+			for (int i = 0; i < howManySwapping; i++) {
+				Vector3 posn = swappingTextures [i].transform.position;
+				swappingTextures[i].transform.position = new Vector3 (
+					Mathf.Lerp (posn.x, goalPosns[i].x, Time.deltaTime / swapDuration),
+					Mathf.Lerp (posn.y, goalPosns[i].y, Time.deltaTime / swapDuration),
+					Mathf.Lerp (posn.z, goalPosns[i].z, Time.deltaTime / swapDuration)
+				);
 			}
-		} else if (isSwapping3) {
-			swapA.transform.position = new Vector3 (Mathf.Lerp (swapA.transform.position.x, goalPosA.x, Time.deltaTime / swapDuration),
-				Mathf.Lerp (swapA.transform.position.y, goalPosA.y, Time.deltaTime / swapDuration),
-				Mathf.Lerp (swapA.transform.position.z, goalPosA.z, Time.deltaTime / swapDuration));
-
-			swapB.transform.position = new Vector3 (Mathf.Lerp (swapB.transform.position.x, goalPosB.x, Time.deltaTime / swapDuration),
-				Mathf.Lerp (swapB.transform.position.y, goalPosB.y, Time.deltaTime / swapDuration),
-				Mathf.Lerp (swapB.transform.position.z, goalPosB.z, Time.deltaTime / swapDuration));
-
-			swapC.transform.position = new Vector3 (Mathf.Lerp (swapC.transform.position.x, goalPosC.x, Time.deltaTime / swapDuration),
-				Mathf.Lerp (swapC.transform.position.y, goalPosC.y, Time.deltaTime / swapDuration),
-				Mathf.Lerp (swapC.transform.position.z, goalPosC.z, Time.deltaTime / swapDuration));
-
 			swapDuration -= Time.deltaTime;
 
-			// swap should be almost finished, set everything to be in the correct position
+			// swap cshould be almost finished, set everything to be in the correct position
 			if (swapDuration <= 0) {
-				swapA.transform.position = goalPosA;
-				swapB.transform.position = goalPosB;
-				swapC.transform.position = goalPosC;
-				isSwapping3 = false;
+				for(int i = 0 ; i < howManySwapping; i++) {
+					swappingTextures[i].transform.position = goalPosns[i];
+				}
+				howManySwapping = 0;
 				//SendMessageUpwards ("DoneSwapping");
-			}
-		} else if (isSwapping4) {
-			swapA.transform.position = new Vector3 (Mathf.Lerp (swapA.transform.position.x, goalPosA.x, Time.deltaTime / swapDuration),
-				Mathf.Lerp (swapA.transform.position.y, goalPosA.y, Time.deltaTime / swapDuration),
-				Mathf.Lerp (swapA.transform.position.z, goalPosA.z, Time.deltaTime / swapDuration));
-
-			swapB.transform.position = new Vector3 (Mathf.Lerp (swapB.transform.position.x, goalPosB.x, Time.deltaTime / swapDuration),
-				Mathf.Lerp (swapB.transform.position.y, goalPosB.y, Time.deltaTime / swapDuration),
-				Mathf.Lerp (swapB.transform.position.z, goalPosB.z, Time.deltaTime / swapDuration));
-
-			swapC.transform.position = new Vector3 (Mathf.Lerp (swapC.transform.position.x, goalPosC.x, Time.deltaTime / swapDuration),
-				Mathf.Lerp (swapC.transform.position.y, goalPosC.y, Time.deltaTime / swapDuration),
-				Mathf.Lerp (swapC.transform.position.z, goalPosC.z, Time.deltaTime / swapDuration));
-
-			swapD.transform.position = new Vector3 (Mathf.Lerp (swapD.transform.position.x, goalPosD.x, Time.deltaTime / swapDuration),
-				Mathf.Lerp (swapD.transform.position.y, goalPosD.y, Time.deltaTime / swapDuration),
-				Mathf.Lerp (swapD.transform.position.z, goalPosD.z, Time.deltaTime / swapDuration));
-			
-
-			swapDuration -= Time.deltaTime;
-
-			// swap should be almost finished, set everything to be in the correct position
-			if (swapDuration <= 0) {
-				swapA.transform.position = goalPosA;
-				swapB.transform.position = goalPosB;
-				swapC.transform.position = goalPosC;
-				swapD.transform.position = goalPosD;
-				isSwapping4 = false;
-				//sSendMessageUpwards ("DoneSwapping");
 			}
 		}
 	}
-
-
-	// Begin swapping the positions of two of the screens
-	public void SwapCameras2(int playerA, int playerB, float duration) {
-
-		// ensure we are not moving a screen to its own position
-		if (playerA == playerB) {
-			Debug.LogError ("Attempted to Swap a Screen with itself!");
-			return;
-		}
-
-		// set the swapping-related values
-		isSwapping2 = true;
-		swapDuration = duration;
-
-		if (playerA == 1) {
-			swapA = quadP1;
-		} else if (playerA == 2) {
-			swapA = quadP2;
-		} else if (playerA == 3) {
-			swapA = quadP3;
-		} else {
-			swapA = quadP4;
-		}
-
-		if (playerB == 1) {
-			swapB = quadP1;
-		} else if (playerB == 2) {
-			swapB = quadP2;
-		} else if (playerB == 3) {
-			swapB = quadP3;
-		} else {
-			swapB = quadP4;
-		}
 		
-		// the positions that our screens will eventually reach
-		goalPosA = swapB.transform.position;
-		goalPosB = swapA.transform.position;
-	}
-
-	public void SwapCameras3Clockwise(int playerA, int playerB, int playerC, float duration) {
-
-		// ensure we are not moving a screen to its own position
-		if (playerA == playerB || playerA == playerC || playerB == playerC) {
-			Debug.LogError ("Attempted to Swap a Screen with itself!");
-			return;
-		}
-
+	// Begin swapping the positions of two of the screens
+	public void SwapCameras(int[] swaps, float duration) {
 		// set the swapping-related values
-		isSwapping3 = true;
+		howManySwapping = swaps.Length;
 		swapDuration = duration;
 
-		if (playerA == 1) {
-			swapA = quadP1;
-		} else if (playerA == 2) {
-			swapA = quadP2;
-		} else if (playerA == 3) {
-			swapA = quadP3;
-		} else {
-			swapA = quadP4;
+		int direction = UnityEngine.Random.Range (0, 1);
+		int[] nums = { 0, 1, 2, 3};
+		for (int i = 0; i < swaps.Length; i++) {
+			int fromQuad = swaps[i];
+			int toQuad;
+			if (direction == 0) {
+				toQuad = swaps [(i + 1) % swaps.Length];
+			} else {
+				toQuad = swaps [(i - 1) % swaps.Length];
+			}
+			Debug.Log("swap from "+fromQuad+" to "+toQuad);
+			swappingTextures[i] = quads[fromQuad];
+			goalPosns[i] = quads[toQuad].transform.position;
 		}
 
-		if (playerB == 1) {
-			swapB = quadP1;
-		} else if (playerB == 2) {
-			swapB = quadP2;
-		} else if (playerB == 3) {
-			swapB = quadP3;
-		} else {
-			swapB = quadP4;
-		}
-
-		if (playerC == 1) {
-			swapC = quadP1;
-		} else if (playerC == 2) {
-			swapC = quadP2;
-		} else if (playerC == 3) {
-			swapC = quadP3;
-		} else {
-			swapC = quadP4;
-		}
-		// the positions that our screens will eventually reach
-		goalPosA = swapB.transform.position;
-		goalPosB = swapC.transform.position;
-		goalPosC = swapA.transform.position;
-	}
-
-	public void SwapCameras3CounterClockwise(int playerA, int playerB, int playerC, float duration) {
-
-		// ensure we are not moving a screen to its own position
-		if (playerA == playerB || playerA == playerC || playerB == playerC) {
-			Debug.LogError ("Attempted to Swap a Screen with itself!");
-			return;
-		}
-
-		// set the swapping-related values
-		isSwapping3 = true;
-		swapDuration = duration;
-
-		if (playerA == 1) {
-			swapA = quadP1;
-		} else if (playerA == 2) {
-			swapA = quadP2;
-		} else if (playerA == 3) {
-			swapA = quadP3;
-		} else {
-			swapA = quadP4;
-		}
-
-		if (playerB == 1) {
-			swapB = quadP1;
-		} else if (playerB == 2) {
-			swapB = quadP2;
-		} else if (playerB == 3) {
-			swapB = quadP3;
-		} else {
-			swapB = quadP4;
-		}
-
-		if (playerC == 1) {
-			swapC = quadP1;
-		} else if (playerC == 2) {
-			swapC = quadP2;
-		} else if (playerC == 3) {
-			swapC = quadP3;
-		} else {
-			swapC = quadP4;
-		}
-		// the positions that our screens will eventually reach
-		goalPosA = swapC.transform.position;
-		goalPosB = swapA.transform.position;
-		goalPosC = swapB.transform.position;
-	}
-
-	public void SwapCameras4Clockwise(int playerA, int playerB, int playerC, int playerD, float duration) {
-
-		// ensure we are not moving a screen to its own position
-		if (playerA == playerB || playerA == playerC || playerA == playerD || 
-			playerB == playerC || playerB == playerD || playerC == playerD) {
-			Debug.LogError ("Attempted to Swap a Screen with itself!");
-			return;
-		}
-
-		// set the swapping-related values
-		isSwapping4 = true;
-		swapDuration = duration;
-
-		if (playerA == 1) {
-			swapA = quadP1;
-		} else if (playerA == 2) {
-			swapA = quadP2;
-		} else if (playerA == 3) {
-			swapA = quadP3;
-		} else {
-			swapA = quadP4;
-		}
-
-		if (playerB == 1) {
-			swapB = quadP1;
-		} else if (playerB == 2) {
-			swapB = quadP2;
-		} else if (playerB == 3) {
-			swapB = quadP3;
-		} else {
-			swapB = quadP4;
-		}
-
-		if (playerC == 1) {
-			swapC = quadP1;
-		} else if (playerC == 2) {
-			swapC = quadP2;
-		} else if (playerC == 3) {
-			swapC = quadP3;
-		} else {
-			swapC = quadP4;
-		}
-
-		if (playerD == 1) {
-			swapD = quadP1;
-		} else if (playerD == 2) {
-			swapD = quadP2;
-		} else if (playerD == 3) {
-			swapD = quadP3;
-		} else {
-			swapD = quadP4;
-		}
-
-		// the positions that our screens will eventually reach
-		goalPosA = swapB.transform.position;
-		goalPosB = swapC.transform.position;
-		goalPosC = swapD.transform.position;
-		goalPosD = swapA.transform.position;
-	}
-
-	public void SwapCameras4CounterClockwise(int playerA, int playerB, int playerC, int playerD, float duration) {
-
-		// ensure we are not moving a screen to its own position
-		if (playerA == playerB || playerA == playerC || playerA == playerD || 
-			playerB == playerC || playerB == playerD || playerC == playerD) {
-			Debug.LogError ("Attempted to Swap a Screen with itself!");
-			return;
-		}
-
-		// set the swapping-related values
-		isSwapping4 = true;
-		swapDuration = duration;
-
-		if (playerA == 1) {
-			swapA = quadP1;
-		} else if (playerA == 2) {
-			swapA = quadP2;
-		} else if (playerA == 3) {
-			swapA = quadP3;
-		} else {
-			swapA = quadP4;
-		}
-
-		if (playerB == 1) {
-			swapB = quadP1;
-		} else if (playerB == 2) {
-			swapB = quadP2;
-		} else if (playerB == 3) {
-			swapB = quadP3;
-		} else {
-			swapB = quadP4;
-		}
-
-		if (playerC == 1) {
-			swapC = quadP1;
-		} else if (playerC == 2) {
-			swapC = quadP2;
-		} else if (playerC == 3) {
-			swapC = quadP3;
-		} else {
-			swapC = quadP4;
-		}
-
-		if (playerD == 1) {
-			swapD = quadP1;
-		} else if (playerD == 2) {
-			swapD = quadP2;
-		} else if (playerD == 3) {
-			swapD = quadP3;
-		} else {
-			swapD = quadP4;
-		}
-
-		// the positions that our screens will eventually reach
-		goalPosA = swapD.transform.position;
-		goalPosB = swapA.transform.position;
-		goalPosC = swapB.transform.position;
-		goalPosD = swapC.transform.position;
 	}
 
 	// indicates that a player's screen should flip 180 degrees
-	public void flipScreens(bool p1, bool p2, bool p3, bool p4, float duration) {
-		isFlipping = true;
-		isFlipping1P = p1;
-		isFlipping2P = p2;
-		isFlipping3P = p3;
-		isFlipping4P = p4;
+	public void flipScreens(bool[] screens, float duration) {
+		if (screens.Length != 4) {
+			Debug.Log("screen flipping args bad");
+		}
+		isFlipping = screens;
+		for(int i = 0; i < 4; i++){
+			if (isFlipping [i]) {
+				isAnyFlipping = true;
+				break;
+			}
+		}
 
 		flipDuration = duration;
 		maxFlipDuration = duration;
