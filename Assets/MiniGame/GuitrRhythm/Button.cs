@@ -56,9 +56,9 @@ public class Button : MonoBehaviour {
 		if (noteHere && isActive ()) {
 			points = 30;
 		} else if (noteHere && !isActive ()) {
-			points = -1;
+			points = 0;
 		} else if (!noteHere && isActive ()) {
-			points = -10;
+			points = -2;
 		} else {
 			points = 0;
 		}

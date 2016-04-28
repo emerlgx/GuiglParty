@@ -4,6 +4,7 @@ using System.Collections;
 public class ScoreDisplay : MonoBehaviour {
 	private  Partyer partyer;
 	private TextMesh textmesh;
+	private TextMesh name;
 	private SpriteRenderer spriteRender;
 	private int playerHighscoreEver;
 	//static private int currentAnyHighScore;
@@ -11,7 +12,8 @@ public class ScoreDisplay : MonoBehaviour {
 
 	void Awake(){
 		textmesh = GetComponent<TextMesh>();
-		spriteRender = transform.transform.FindChild("face").gameObject.GetComponent<SpriteRenderer>();
+		spriteRender = transform.FindChild("face").GetComponent<SpriteRenderer>();
+		name = transform.FindChild("name").GetComponent<TextMesh>();
 	}
 
 	public void assignPlayer(Partyer p){
@@ -19,6 +21,8 @@ public class ScoreDisplay : MonoBehaviour {
 		playerHighscoreEver = partyer.score;
 		spriteRender.sprite = partyer.face;
 		textmesh.color      = partyer.darkCol;
+		name.text           = partyer.name;
+		name.color          = partyer.darkCol;
 		playerAssigned = true;
 	}
 

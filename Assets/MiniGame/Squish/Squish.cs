@@ -18,10 +18,13 @@ public class Squish : MiniGame{
 	bool letGoRight = true;
 	bool letGoMiddle = true;
 
+	void Awake(){
+		background = transform.FindChild ("Background").gameObject;
+	}
+
 	void Start () {
 		inputs = new InputSet (false, false, false);
 		squisherObj.GetComponent<Squisher> ().squishGame = this.gameObject;
-
 	}
 
 	void FixedUpdate() {
@@ -65,10 +68,10 @@ public class Squish : MiniGame{
 		// noot noot
 	}
 
-	public virtual void setPartyer (Partyer p) {
+	public override void setPartyer (Partyer p) {
 		// updates the partyer
 		partyer = p;
-		background.GetComponent<SpriteRenderer> ().sprite = partyer.face;
+		background.GetComponent<SpriteRenderer>().sprite = partyer.face;
 	}
 
 	public void makeGuigl() {

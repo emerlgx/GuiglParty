@@ -63,7 +63,7 @@ public class GuiglCannon : MiniGame {
 	public override void control (ControlCommand command) {
 		// beep boop
 	}
-
+		
 	public override void setPartyer (Partyer p) {
 		partyer = p;
 	}
