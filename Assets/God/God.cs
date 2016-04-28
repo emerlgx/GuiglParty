@@ -53,10 +53,13 @@ public class God : MonoBehaviour {
 	private Vector3[] scoreBoardPosns; 
 
 	public float replaceGameChance;
+	public float[] playersInGameChance;	// percent chance of a game with # players being chosen. must sum to 1
 	public float replaceGameTimeMin;
 	public float replaceGameTimeMax;
 	private float replaceGameCounter;
-	public GameObject explosionGif;
+	public float gameAnimationDelay4P = 1.0f;	// delay the creation of a 4 player game in order to allow an animation to cover the change
+	public GameObject dummyPrefab;		// used for passing input with multiplayer games
+	public GameObject explosionGif;		// displayed when switching singleplayer games
 
 	void Awake() {
 		keyboardPlayerMap = new int[4]{ 
@@ -174,7 +177,6 @@ public class God : MonoBehaviour {
 
 	void createNewGame(int camNum, Partyer partyer){
 		GameObject miniGameInstance = Instantiate(allGames[0][Random.Range(0, allGames.Length)]) as GameObject;
-		//GameObject miniGameInstance = Instantiate(allGames[1]);
 		Vector3 posn = gameCams[camNum].transform.position;
 		posn.z = 0;
 		miniGameInstance.transform.position = posn; 
@@ -184,6 +186,44 @@ public class God : MonoBehaviour {
 		miniGames[camNum].setPartyer(partyer);
 	}
 
+	// replaces all 4 games with a new 4P game
+	// built as a coroutine in order to allow for an animation to pass before creating the new games
+	IEnumerator createNew4PGame() {
+		// display some animation so that the transition looks smooth
+
+		yield return new WaitForSeconds(2);
+
+		// move the textures back to their initial position so that the display will make sense
+		swapper.revertScreens();
+
+		// select a 4P game and give it to player 1
+		GameObject miniGameInstance = Instantiate(allGames[3][Random.Range(0, allGames.Length)]) as GameObject;
+		Vector3 posn = gameCams[0].transform.position;
+		posn.z = 0;
+		miniGameInstance.transform.position = posn; 
+		miniGameInstance.transform.SetParent(gameCams[0].transform);
+
+		miniGames[0] = miniGameInstance.GetComponent<MiniGame>();
+		miniGames[0].setPartyer(partyers[0]);
+
+		//give dummy games to the other 3 players
+		for (int i = 1; i < 4; i++) {
+			GameObject dummyGameInstance = Instantiate (dummyPrefab) as GameObject;
+			posn = gameCams[i].transform.position;
+			posn.z = 0;
+			miniGameInstance.transform.position = posn; 
+			miniGameInstance.transform.SetParent(gameCams[i].transform);
+
+			miniGames [i] = miniGameInstance.GetComponent<MiniGame>();
+			miniGames [i].setPartyer(partyers[i]);
+			miniGames [i].GetComponent<DummyGame> ().assignGame (miniGames [0] as MiniGameMulti, i);
+		}
+
+
+		yield break;
+	}
+
+	// replaces an individual singleplayer game
 	void replaceGame(int camNum){
 		Partyer p = miniGames[camNum].partyer;
 		miniGames[camNum].blowUp(explosionGif);
@@ -192,11 +232,37 @@ public class God : MonoBehaviour {
 	}
 
 	void replaceGames(){
-		for (int i = 0; i < 4; i++) {
-			if (Random.value < replaceGameChance) {
-				replaceGame (i);
+		// select the number of players in the game
+		float sum = Random.value;
+
+		if (sum < playersInGameChance [0]) {
+			// place the cameras in the correct positions for 1P games
+			for (int j = 0; j < 4; j++) {
+				gameCams [j].transform.position = allPosns [0] [j];
 			}
+
+			// make 4 new 1P games
+			for (int j = 0; j < 4; j++) {
+				if (Random.value < replaceGameChance) {
+					replaceGame (j);
+				}
+			}
+		} else if (sum < playersInGameChance [0] + playersInGameChance [1]) {
+			// make a 2P game
+			Debug.LogError("2P games can't be made yet!");
+		} else if (sum < playersInGameChance [0] + playersInGameChance [1] + playersInGameChance [2]) {
+			// make a 3P game
+			Debug.LogError("3P games can't be made yet!");
+		} else {
+			// place the cameras in the correct positions for 4P games
+			for (int j = 0; j < 4; j++) {
+				gameCams [j].transform.position = allPosns [3] [j];
+			}
+
+			// make a 4P game
+			StartCoroutine(createNew4PGame());
 		}
+
 	}
 
 	void swapSomething(){
