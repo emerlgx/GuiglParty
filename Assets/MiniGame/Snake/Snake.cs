@@ -57,6 +57,7 @@ public class Snake : MiniGame {
 		partyer = p;
 		// change the sprite to the current player
 		SnakeSprite.sprite = p.face;
+		SnakeHead.GetComponent<TrailRenderer> ().material.color = partyer.darkCol;
 		Debug.Log (partyer.name);
 		Debug.Log("Set Sprite = " + (SnakeSprite.sprite==p.face));
 	}
