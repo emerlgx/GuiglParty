@@ -101,6 +101,7 @@ public class GuiglHoops : MiniGame {
 		float modifier = Random.Range (-1.0f * launchSpeedModifier, launchSpeedModifier);
 		ball.GetComponent<Rigidbody2D> ().AddForce (Vector2.right * (launchSpeed+modifier));
 		ball.GetComponent<SpriteRenderer> ().sprite = partyer.face;
+		ball.transform.SetParent (this.transform);
 		guigls.Add (ball);
 	}
 
@@ -109,6 +110,7 @@ public class GuiglHoops : MiniGame {
 		float modifier = Random.Range (-1.0f * launchSpeedModifier, launchSpeedModifier);
 		ball.GetComponent<Rigidbody2D> ().AddForce (Vector2.left * (launchSpeed+modifier));
 		ball.GetComponent<SpriteRenderer> ().sprite = partyer.face;
+		ball.transform.SetParent (this.transform);
 		guigls.Add (ball);
 	}
 
