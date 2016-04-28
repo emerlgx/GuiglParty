@@ -4,11 +4,12 @@ using System.Collections;
 public class CatchDerburg : MiniGameMulti {
 	private GameObject derberg;
 	private Vector3[] startPosns;
-	private ChaserMover[] avatars;
+	private ChaserMover[] chasers;
 	public GameObject avatarTemplate;
-	private float bounds  = 4;
+	private float bounds  = 3.5f;
 
 	void Awake(){
+		inputs = new InputSet[4];
 		partyers = new Partyer[4];
 		derberg = transform.FindChild("derburg").gameObject;
 		startPosns = new Vector3[4]{
@@ -17,26 +18,30 @@ public class CatchDerburg : MiniGameMulti {
 			new Vector3(-bounds, -bounds, 0),
 			new Vector3( bounds, -bounds, 0)
 		};
-		avatars = new ChaserMover[4];
+		chasers = new ChaserMover[4];
+
+		for (int i = 0; i < 4; i++) {
+			GameObject chaserObj = Instantiate(avatarTemplate, startPosns[i], Quaternion.identity) as GameObject;
+			chaserObj.transform.SetParent(transform);
+			chasers[i] = chaserObj.GetComponent<ChaserMover>();
+		}
 	}
 
 	void Start () {
-		GameObject[] chasers = new GameObject[4];
+		Transform[] chaserObjs = new Transform[4];
 		for (int i = 0; i < 4; i++) {
-			chasers[i] = Instantiate(avatarTemplate, startPosns[i], Quaternion.identity) as GameObject;
-			avatars[i] = chasers[i].GetComponent<ChaserMover>();
-			//maybe get ahold of their control scripts
+			chaserObjs[i] = chasers[i].transform;
 		}
 
-		//place derberg
-		derberg.GetComponent<DerburgMover>().setChasers(chasers);
+		derberg.GetComponent<DerburgMover>().setChasers(chaserObjs);
 		placeDerberg();
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		for (int i = 0; i < 4; i++) {
-			avatars[i].move(inputs[i]);
+			chasers[i].move(inputs[i]);
 		}
 	}
 
@@ -50,7 +55,9 @@ public class CatchDerburg : MiniGameMulti {
 
 	public override void addPartyer(int index, Partyer p){
 		partyers[index] = p;
-		avatars[index].GetComponent<SpriteRenderer>().sprite = p.face;
+		//maybe get ahold of their control scripts
+		Debug.Log("chasers "+index+" is null: "+(p == null));
+		chasers[index].GetComponent<SpriteRenderer>().sprite = p.face;
 	}
 
 	void placeDerberg(){
@@ -59,6 +66,7 @@ public class CatchDerburg : MiniGameMulti {
 			Random.Range(-bounds, bounds),
 			0
 		);
+		derberg.transform.position += transform.position;
 	}
 
 	public override void control(ControlCommand cmd){}

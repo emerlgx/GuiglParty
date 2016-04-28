@@ -19,9 +19,7 @@ public class DerburgMover : MonoBehaviour {
 
 	}
 
-	public void setChasers(GameObject[] gos){
-		for (int i = 0; i < 4; i++){
-			chasers[i] = gos[i].transform;
-		}
+	public void setChasers(Transform[] gos){
+		chasers = gos;
 	}
 }

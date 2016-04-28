@@ -11,6 +11,11 @@ public class DummyGame : MiniGame {
 		mg.addPartyer(pn, partyer);
 	}
 
+	public override void setPartyer(Partyer p){
+		partyer = p;
+		Debug.Log("dummy player assigned");
+	}
+
 	public override void tick(InputSet input){
 		minigame.takeInput(playerNum, input);
 	}
