@@ -120,7 +120,7 @@ public class God : MonoBehaviour {
 			musicSwitchCounter = UnityEngine.Random.Range(musicSwitchTimeMin, musicSwitchTimeMax);
 			replaceGameCounter = UnityEngine.Random.Range(replaceGameTimeMin, replaceGameTimeMax);
 
-			jukeBox.pickSong();
+			jukeBox.pickSong(musicSwitchCounter);
 		}
 	}
 
@@ -142,8 +142,8 @@ public class God : MonoBehaviour {
 		}
 
 		if (musicSwitchCounter <= 0.0f) {
-			jukeBox.pickSong();
 			musicSwitchCounter = UnityEngine.Random.Range(musicSwitchTimeMin, musicSwitchTimeMax);
+			jukeBox.pickSong(musicSwitchCounter);
 		} else {
 			musicSwitchCounter -= Time.deltaTime;
 		}
