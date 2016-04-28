@@ -51,7 +51,7 @@ public class JukeBox : MonoBehaviour {
 	public void Update() {
 		musicMaker.pitch = Mathf.Lerp (startPitch, goalPitch, clipTime / clipDuration);
 		clipTime += Time.deltaTime;
-		Debug.Log (musicMaker.pitch);
+		//Debug.Log (musicMaker.pitch);
 	}
 
 	public void pickBeyonce(){

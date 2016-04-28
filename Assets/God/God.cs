@@ -44,6 +44,7 @@ public class God : MonoBehaviour {
 	public float screenFlipTimeMin = 15.0f;	// minimum time between swaps
 	public float screenFlipDuration = 1.0f;	// how long the actual swap operation will take
 	private float screenFlipCounter;		// holds the time until the next swap
+	private bool[] lockPosition = {false,false,false,false}; // when true, disallows swaps/rotations on a given screen
 
 	private JukeBox jukeBox;
 	public float musicSwitchTimeMax = 60.0f;	// max time between swaps
@@ -187,7 +188,6 @@ public class God : MonoBehaviour {
 	}
 
 	// replaces all 4 games with a new 4P game
-	// built as a coroutine in order to allow for an animation to pass before creating the new games
 	IEnumerator createNew4PGame() {
 		// display some animation so that the transition looks smooth
 
@@ -241,6 +241,11 @@ public class God : MonoBehaviour {
 				gameCams [j].transform.position = allPosns [0] [j];
 			}
 
+			// unlock texture positions
+			for (int j = 0; j < 4; j++) {
+				lockPosition [j] = false;
+			}
+
 			// make 4 new 1P games
 			for (int j = 0; j < 4; j++) {
 				if (Random.value < replaceGameChance) {
@@ -259,6 +264,11 @@ public class God : MonoBehaviour {
 				gameCams [j].transform.position = allPosns [3] [j];
 			}
 
+			// lock the positions of all screens so that the game isn't too insane
+			for(int i = 0; i < 4; i++) {
+				lockPosition [i] = true;
+			}
+
 			// make a 4P game
 			StartCoroutine(createNew4PGame());
 		}
@@ -267,6 +277,16 @@ public class God : MonoBehaviour {
 
 	void swapSomething(){
 		int[] swappers = choosePlayers();
+
+		// if everything is locked, don't swap anything
+		// change this when 2P games and 3P games are added
+		bool canSwap = true;
+		for (int i = 0; i < 4; i++) {
+			canSwap = (canSwap && !lockPosition [i]);
+		}
+		if (!canSwap) {
+			return;
+		}
 
 		for (int i = 0; i < 4; i++) {
 			if (System.Array.IndexOf(swappers, i) < 0)
@@ -299,6 +319,11 @@ public class God : MonoBehaviour {
 			UnityEngine.Random.value > 0.5f, 
 			UnityEngine.Random.value > 0.5f, 
 			UnityEngine.Random.value > 0.5f };
+		
+		// don't flip any locked screens
+		for (int i = 0; i < 4; i++) {
+			flipper [i] = (flipper [i] && !lockPosition [i]);
+		}
 		
 		swapper.flipScreens(flipper, screenFlipDuration);
 	}
