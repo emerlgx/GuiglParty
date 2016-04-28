@@ -9,24 +9,27 @@ public class Bump : MonoBehaviour {
 	float startHeight;
 
 	void Start() {
-		startHeight = this.transform.position.y;
+		startHeight = this.transform.localPosition.y;
 	}
 
 
 	void FixedUpdate () {
-		if (isBumping) {
-			Vector3 newPos = transform.position;
-			newPos.y += Time.deltaTime * speed;
-			transform.position = newPos;
-			if (transform.position.y >= height + startHeight) {
-				newPos.y = height + startHeight;
-				transform.position = newPos;
-				isBumping = false;
-			}
-		} else if(transform.position.y > startHeight) {
-			Vector3 newPos = transform.position;
-			newPos.y -= Time.deltaTime * speed;
-			transform.position = newPos;
+		if (isBumping && transform.localPosition.y <= height + startHeight) {
+			//newPos.y += Time.deltaTime * speed;
+			//transform.position = newPos;
+			this.GetComponent<Rigidbody2D> ().velocity = Vector2.up * speed * Time.deltaTime;
+		}
+
+
+		if (transform.localPosition.y >= height + startHeight) {
+			this.GetComponent<Rigidbody2D> ().velocity = Vector2.down * speed * Time.deltaTime;
+			isBumping = false;
+		}
+		if (transform.localPosition.y <= startHeight) {
+			Vector3 newPos = transform.localPosition;
+			newPos.y = startHeight;
+			transform.localPosition = newPos;
+			isBumping = false;
 		}
 	}
 
