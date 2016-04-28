@@ -11,6 +11,14 @@ public class God : MonoBehaviour {
 	public GameObject[] games3P;
 	public GameObject[] games4P;
 
+	// camera positions for when games with varying numbers of players are made
+	public Vector3[][] allPosns;
+	public Vector3[] posns1P;
+	public Vector3[] posns2P;
+	public Vector3[] posns3P;
+	public Vector3[] posns4P;
+		
+
 	private string[]    names;
 	public Sprite[]     sprites;
 	private Partyer[]   partyers;
@@ -63,6 +71,12 @@ public class God : MonoBehaviour {
 		allGames [1] = games2P;
 		allGames [2] = games3P;
 		allGames [3] = games4P;
+
+		allPosns = new Vector3[4][];
+		allPosns [0] = posns1P;
+		allPosns [1] = posns2P;
+		allPosns [2] = posns3P;
+		allPosns [3] = posns4P;
 
 		miniGames = new MiniGame[4];
 
