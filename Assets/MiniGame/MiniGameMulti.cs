@@ -2,10 +2,10 @@
 using System.Collections;
 
 public abstract class MiniGameMulti : MiniGame {
-	private Partyer[]  partyers;
-	private InputSet[] inputs;
+	protected Partyer[]  partyers;
+	protected InputSet[] inputs;
 
-	public void addPartyer(int index, Partyer p){
+	public virtual void addPartyer(int index, Partyer p){
 		partyers[index] = p;
 	}
 

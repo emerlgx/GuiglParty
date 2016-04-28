@@ -8,6 +8,7 @@ public class TextureHolder : MonoBehaviour {
 	// Indicates if a screen swap is currently happening
 	int howManySwapping = 0;
 	bool[] isFlipping;
+	bool isAnyFlipping = false;
 
 	// Values associated with a screen position swap
 	float swapDuration;
@@ -18,7 +19,6 @@ public class TextureHolder : MonoBehaviour {
 	// Values associated with a screen flip
 	float flipDuration;
 	float maxFlipDuration;
-	bool isAnyFlipping = false;
 
 	void Awake(){
 		isFlipping = new bool[4]{ false, false, false, false };
@@ -51,7 +51,7 @@ public class TextureHolder : MonoBehaviour {
 				isAnyFlipping = false;
 
 				for (int i = 0; i < 4; i++) {
-					float angle = quads [i].transform.rotation.z;
+					float angle = quads [i].transform.eulerAngles.z;
 					if (angle >= 270.0f || angle <= 90.0f) {
 						quads[i].transform.rotation = Quaternion.AngleAxis (0, Vector3.forward);
 					}
@@ -81,12 +81,20 @@ public class TextureHolder : MonoBehaviour {
 				}
 				howManySwapping = 0;
 				//SendMessageUpwards ("DoneSwapping");
+
+				for (int i = 0; i < 4; i++) {
+					quads[i].GetComponent<MeshRenderer>().materials [0].SetColor(0, new Color(1f, 1f, 1f, 1f));
+				}
 			}
 		}
 	}
 		
 	// Begin swapping the positions of two of the screens
 	public void SwapCameras(int[] swaps, float duration) {
+		for (int i = 0; i < 4; i++) {
+			quads[i].GetComponent<MeshRenderer>().materials [0].SetColor(0, new Color(1f, 1f, 1f, 0.3f));
+		}
+
 		// set the swapping-related values
 		howManySwapping = swaps.Length;
 		swapDuration = duration;

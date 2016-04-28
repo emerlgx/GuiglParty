@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -27,6 +26,24 @@ public class God : MonoBehaviour {
 	private float screenSwapCounter;		// holds the time until the next swap
 
 	public float afterSwapPause = 1.0f;
+	// screens will flip upside-down depending on these values
+	public float screenFlipTimeMax = 60.0f;	// max time between swaps
+	public float screenFlipTimeMin = 15.0f;	// minimum time between swaps
+	public float screenFlipDuration = 1.0f;	// how long the actual swap operation will take
+	private float screenFlipCounter;		// holds the time until the next swap
+
+	private JukeBox jukeBox;
+	public float musicSwitchTimeMax = 60.0f;	// max time between swaps
+	public float musicSwitchTimeMin = 15.0f;	// minimum time between swaps
+	private float musicSwitchCounter;
+
+	private Vector3[] scoreBoardPosns; 
+
+	public float replaceGameChance;
+	public float replaceGameTimeMin;
+	public float replaceGameTimeMax;
+	private float replaceGameCounter;
+	public GameObject explosionGif;
 
 	// Use this for initialization
 	void Awake() {
@@ -53,34 +70,31 @@ public class God : MonoBehaviour {
 
 		scoreTemplate = transform.FindChild("scoreDisplayTemplate").gameObject;
 		scoreBoards   = new GameObject[4];
+		scoreBoardPosns = new Vector3[4] {
+			new Vector3(-4.7f,  3f, 0f),
+			new Vector3( 4.7f,  3f, 0f),
+			new Vector3(-4.7f, -3f, 0f),
+			new Vector3( 4.7f, -3f, 0f)
+		};
+			
+		jukeBox = transform.FindChild("JukeBox").GetComponent<JukeBox>();
 	}
 
 	void Start() {
-		Vector3[] scoreBoardPosns = new Vector3[4] {
-			new Vector3(-4.6f,  3.3f, 0f),
-			new Vector3( 4.6f,  3.3f, 0f),
-			new Vector3(-4.6f, -3.3f, 0f),
-			new Vector3( 4.6f, -3.3f, 0f)
-		};
-
-		System.Random rnd = new System.Random();
 		for (int i = 0; i < 4; i++) {
-			GameObject miniGameInstance = Instantiate(allGames[rnd.Next(allGames.Length)]);
-			//GameObject miniGameInstance = Instantiate(allGames[1]);
-			Vector3 posn = gameCams	[i].transform.position;
-			        posn.z = 0;
-			miniGameInstance.transform.position = posn; 
-			miniGameInstance.transform.SetParent(gameCams[i].transform);
-
-			miniGames[i] = miniGameInstance.GetComponent<MiniGame>();
-			miniGames[i].setPartyer(partyers[i]);
+			createNewGame(i, partyers[i]);
 
 			scoreBoards[i] = Instantiate(scoreTemplate) as GameObject;
 			scoreBoards[i].transform.localPosition = scoreBoardPosns[i];
 			scoreBoards[i].GetComponent<ScoreDisplay>().assignPlayer(partyers[i]);
 			Debug.Log("Assigned scorboard "+i);
 
-			screenSwapCounter = UnityEngine.Random.Range(screenSwapTimeMin, screenSwapTimeMax);
+			screenSwapCounter = UnityEngine.Random.Range (screenSwapTimeMin, screenSwapTimeMax);
+			screenFlipCounter = UnityEngine.Random.Range (screenFlipTimeMin, screenFlipTimeMax);
+			musicSwitchCounter = UnityEngine.Random.Range(musicSwitchTimeMin, musicSwitchTimeMax);
+			replaceGameCounter = UnityEngine.Random.Range(replaceGameTimeMin, replaceGameTimeMax);
+
+			jukeBox.pickSong();
 		}
 	}
 
@@ -88,21 +102,41 @@ public class God : MonoBehaviour {
 	void Update () {
 		//decide whether to swap
 		if (screenSwapCounter <= 0.0f) {
-			screenSwapCounter = UnityEngine.Random.Range(screenSwapTimeMin, screenSwapTimeMax);
 			swapSomething();
 		} else {
 			screenSwapCounter -= Time.deltaTime;
-			InputSet[] inputs = inputManager.getInputs();
-			Dictionary<MiniGame, InputSet> matchedInputs = organizeInputs(inputs);
-			foreach (GameObject camera in gameCams) {
-				MiniGame mg = camera.GetComponentInChildren<MiniGame>();
-				InputSet input = new InputSet(false, false, false);
-				matchedInputs.TryGetValue(mg, out input);
-				mg.tick(input);
-			}
-		}	   
-	}
+		}
 
+		// decide whether to flip
+		if (screenFlipCounter <= 0.0f) {
+			quadFlip();
+		} else {
+			screenFlipCounter -= Time.deltaTime;
+		}
+
+		if (musicSwitchCounter <= 0.0f) {
+			jukeBox.pickSong();
+			musicSwitchCounter = UnityEngine.Random.Range(musicSwitchTimeMin, musicSwitchTimeMax);
+		} else {
+			musicSwitchCounter -= Time.deltaTime;
+		}
+
+		if (replaceGameCounter <= 0f) {
+			replaceGames();
+		} else {
+			replaceGameCounter -= Time.deltaTime;
+		}
+
+		InputSet[] inputs = inputManager.getInputs();
+		Dictionary<MiniGame, InputSet> matchedInputs = organizeInputs(inputs);
+		foreach (GameObject camera in gameCams) {
+			MiniGame mg = camera.GetComponentInChildren<MiniGame>();
+			InputSet input = new InputSet(false, false, false);
+			matchedInputs.TryGetValue(mg, out input);
+			mg.tick(input);
+		}
+	}
+		
 	public Dictionary<MiniGame, InputSet> organizeInputs(InputSet[] inputs) {
 		Dictionary<MiniGame, InputSet> gameInputs = new Dictionary<MiniGame, InputSet>();
 		for (int i = 0; i < 4; i++) {
@@ -112,11 +146,40 @@ public class God : MonoBehaviour {
 		return gameInputs;
 	}
 
+
+	void createNewGame(int camNum, Partyer partyer){
+		GameObject miniGameInstance = Instantiate(allGames[Random.Range(0, allGames.Length)]);
+		//GameObject miniGameInstance = Instantiate(allGames[1]);
+		Vector3 posn = gameCams[camNum].transform.position;
+		posn.z = 0;
+		miniGameInstance.transform.position = posn; 
+		miniGameInstance.transform.SetParent(gameCams[camNum].transform);
+
+		miniGames[camNum] = miniGameInstance.GetComponent<MiniGame>();
+		miniGames[camNum].setPartyer(partyer);
+	}
+
+	void replaceGame(int camNum){
+		Partyer p = miniGames[camNum].partyer;
+		miniGames[camNum].blowUp(explosionGif);
+		Destroy(miniGames[camNum].gameObject);
+		createNewGame(camNum, p);
+	}
+
+	void replaceGames(){
+		for (int i = 0; i < 4; i++) {
+			if (Random.value < replaceGameChance) {
+				replaceGame (i);
+			}
+		}
+		replaceGameCounter = UnityEngine.Random.Range(replaceGameTimeMin, replaceGameTimeMax);
+	}
+
 	void swapSomething(){
 		int[] swappers = choosePlayers();
 
 		for (int i = 0; i < 4; i++) {
-			if (Array.IndexOf(swappers, i) < 0)
+			if (System.Array.IndexOf(swappers, i) < 0)
 				continue;
 			miniGames[i].setInSwap(true); 
 		} 
@@ -124,11 +187,14 @@ public class God : MonoBehaviour {
 		if (true) {
 			swapper.SwapCameras(swappers, screenSwapDuration);
 		}
+
 		for (int i = 0; i < 4; i++) {
-			if (Array.IndexOf(swappers, i) < 0)
+			if (System.Array.IndexOf(swappers, i) < 0)
 				continue;
 			miniGames[i].setInSwap(false); 
 		} 
+
+		screenSwapCounter = UnityEngine.Random.Range(screenSwapTimeMin, screenSwapTimeMax);
 	}
 
 	int[] choosePlayers(){
@@ -136,9 +202,17 @@ public class God : MonoBehaviour {
 		int[] order = { 0, 1, 2, 3 };
 		Constants.ShuffleArray(order);
 		int[] swappers = new int[numToSwitch];
-		Array.Copy(order, 0, swappers, 0, numToSwitch);
+		System.Array.Copy(order, 0, swappers, 0, numToSwitch);
 		return swappers;
 	}
 
-	// randomly swap positions of some number of rendertextures
+	void quadFlip() {
+		bool[] flipper = { UnityEngine.Random.value > 0.5f, 
+			UnityEngine.Random.value > 0.5f, 
+			UnityEngine.Random.value > 0.5f, 
+			UnityEngine.Random.value > 0.5f };
+		
+		swapper.flipScreens(flipper, screenFlipDuration);
+		screenFlipCounter = UnityEngine.Random.Range (screenFlipTimeMin, screenFlipTimeMax);
+	}
 }
