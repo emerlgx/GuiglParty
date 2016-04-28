@@ -75,6 +75,7 @@ public class Squish : MiniGame{
 		GameObject temp = Instantiate (guiglPrefab, SpawnPoint.transform.position, Quaternion.identity) as GameObject;
 		temp.GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-1.0f* guiglForce, guiglForce), 0.0f));
 		temp.GetComponent<SpriteRenderer> ().sprite = partyer.face;
+		temp.transform.SetParent (this.transform);
 	}
 
 	public void squished() {
