@@ -14,6 +14,7 @@ public class TextureHolder : MonoBehaviour {
 	GameObject[] swappingTextures;
 
 	Vector3[] goalPosns;
+	Vector3[] startPosns;
 
 	// Values associated with a screen flip
 	float flipDuration;
@@ -25,12 +26,14 @@ public class TextureHolder : MonoBehaviour {
 		quads = new GameObject[4];
 		swappingTextures = new GameObject[4];
 		goalPosns = new Vector3[4];
+		startPosns = new Vector3[4];
 	}
 
 	// Use this for initialization
 	void Start() {
 		for (int i = 0; i < 4; i++) {
 			quads[i] = transform.FindChild("Q"+(i+1)+"Texture").gameObject;
+			startPosns[i] = quads [i].transform.position;
 		}
 	}
 
@@ -74,13 +77,12 @@ public class TextureHolder : MonoBehaviour {
 			}
 			swapDuration -= Time.deltaTime;
 
-			// swap cshould be almost finished, set everything to be in the correct position
+			// swap should be almost finished, set everything to be in the correct position
 			if (swapDuration <= 0) {
 				for(int i = 0 ; i < howManySwapping; i++) {
 					swappingTextures[i].transform.position = goalPosns[i];
 				}
 				howManySwapping = 0;
-				//SendMessageUpwards ("DoneSwapping");
 			}
 		}
 	}
@@ -123,5 +125,18 @@ public class TextureHolder : MonoBehaviour {
 
 		flipDuration = duration;
 		maxFlipDuration = duration;
+	}
+
+	public void revertScreens() {
+		// rearrange screens back to the initial position
+		isAnyFlipping = false;
+		flipDuration = 0.0f;
+		howManySwapping = 0;
+		swapDuration = 0.0f;
+		for (int i = 0; i < 4; i++) {
+			isFlipping [i] = false;
+			quads [i].transform.rotation = Quaternion.AngleAxis (0, Vector3.forward);
+			quads [i].transform.position = startPosns [i];
+		}
 	}
 }

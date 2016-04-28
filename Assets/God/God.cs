@@ -6,7 +6,12 @@ using System.Collections.Generic;
 //from KeyInput import InputSet;
 
 public class God : MonoBehaviour {
-	public GameObject[] allGames;
+	public GameObject[][] allGames;
+	public GameObject[] games1P;
+	public GameObject[] games2P;
+	public GameObject[] games3P;
+	public GameObject[] games4P;
+
 	private string[]    names;
 	public Sprite[]     sprites;
 	private Partyer[]   partyers;
@@ -28,7 +33,6 @@ public class God : MonoBehaviour {
 
 	public float afterSwapPause = 1.0f;
 
-	// Use this for initialization
 	void Awake() {
 		keyboardPlayerMap = new int[4]{ 
 			(int)PartyNames.Guigl,      (int)PartyNames.Ubaldino, 
@@ -37,6 +41,11 @@ public class God : MonoBehaviour {
 
 		swapper = GetComponent<TextureHolder>();
 		inputManager = GetComponent<KeyInput>();
+		allGames = new GameObject[4][];
+		allGames [0] = games1P;
+		allGames [1] = games2P;
+		allGames [2] = games3P;
+		allGames [3] = games4P;
 
 		miniGames = new MiniGame[4];
 
@@ -65,8 +74,7 @@ public class God : MonoBehaviour {
 
 		System.Random rnd = new System.Random();
 		for (int i = 0; i < 4; i++) {
-			GameObject miniGameInstance = Instantiate(allGames[rnd.Next(allGames.Length)]);
-			//GameObject miniGameInstance = Instantiate(allGames[1]);
+			GameObject miniGameInstance = Instantiate(allGames[0][rnd.Next(allGames[0].Length)]) as GameObject;
 			Vector3 posn = gameCams	[i].transform.position;
 			        posn.z = 0;
 			miniGameInstance.transform.position = posn; 
@@ -84,7 +92,6 @@ public class God : MonoBehaviour {
 		}
 	}
 
-	// Update is called once per frame
 	void Update () {
 		//decide whether to swap
 		if (screenSwapCounter <= 0.0f) {
@@ -128,7 +135,7 @@ public class God : MonoBehaviour {
 			if (Array.IndexOf(swappers, i) < 0)
 				continue;
 			miniGames[i].setInSwap(false); 
-		} 
+		}
 	}
 
 	int[] choosePlayers(){
@@ -140,5 +147,4 @@ public class God : MonoBehaviour {
 		return swappers;
 	}
 
-	// randomly swap positions of some number of rendertextures
 }
