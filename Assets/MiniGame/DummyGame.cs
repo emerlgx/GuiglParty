@@ -13,10 +13,10 @@ public class DummyGame : MiniGame {
 
 	public override void setPartyer(Partyer p){
 		partyer = p;
-		Debug.Log("dummy player assigned");
 	}
 
 	public override void tick(InputSet input){
+		Debug.Log("passing p"+playerNum+" null: "+(input == null));
 		minigame.takeInput(playerNum, input);
 	}
 

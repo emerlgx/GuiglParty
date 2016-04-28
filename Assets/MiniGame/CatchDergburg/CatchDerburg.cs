@@ -21,7 +21,7 @@ public class CatchDerburg : MiniGameMulti {
 		chasers = new ChaserMover[4];
 
 		for (int i = 0; i < 4; i++) {
-			GameObject chaserObj = Instantiate(avatarTemplate, startPosns[i], Quaternion.identity) as GameObject;
+			GameObject chaserObj = Instantiate(avatarTemplate, startPosns[i] + transform.position, Quaternion.identity) as GameObject;
 			chaserObj.transform.SetParent(transform);
 			chasers[i] = chaserObj.GetComponent<ChaserMover>();
 		}
@@ -46,6 +46,7 @@ public class CatchDerburg : MiniGameMulti {
 	}
 
 	public override void tick(InputSet input){
+		Debug.Log("passing p0 null: "+(input == null));
 		inputs[0] = input;
 	}
 
@@ -56,17 +57,15 @@ public class CatchDerburg : MiniGameMulti {
 	public override void addPartyer(int index, Partyer p){
 		partyers[index] = p;
 		//maybe get ahold of their control scripts
-		Debug.Log("chasers "+index+" is null: "+(p == null));
 		chasers[index].GetComponent<SpriteRenderer>().sprite = p.face;
 	}
 
 	void placeDerberg(){
-		derberg.transform.position = new Vector3(
-			Random.Range(-bounds, bounds),
-			Random.Range(-bounds, bounds),
+		derberg.transform.localPosition = new Vector3 (
+			Random.Range (-bounds, bounds),
+			Random.Range (-bounds, bounds),
 			0
 		);
-		derberg.transform.position += transform.position;
 	}
 
 	public override void control(ControlCommand cmd){}
