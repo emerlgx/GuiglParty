@@ -50,7 +50,7 @@ public class Move2Left : MiniGame {
 		}
 
 		if (inputs.middle && (!isJumping || jumpTimer <= 0.0f)) {
-			jumper.AddForce(Vector2.up * moveSpeed, ForceMode2D.Impulse);
+			jumper.AddForce(Vector2.up * 1.3f * moveSpeed, ForceMode2D.Impulse);
 
 			isJumping = true;
 			jumpTimer = jumpTimerMax;

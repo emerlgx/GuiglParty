@@ -16,7 +16,7 @@ public class BusinessFalling : MonoBehaviour {
 		transform.Translate(new Vector3(0,-Time.deltaTime * speed,0));
 
 		if(transform.localPosition.y < startHeight - distance) {
-			transform.localPosition = new Vector3(transform.localPosition.x,startHeight,transform.localPosition.z);
+			transform.localPosition = new Vector3(Random.Range(-2.0f,1.1f), startHeight, transform.localPosition.z);
 		}
 	}
 
