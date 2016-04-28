@@ -14,6 +14,7 @@ public class DerburgMover : MonoBehaviour {
 		for (int i = 0; i < 4; i++) {
 			Vector3 diff = transform.position - chasers [i].position;
 			direction += diff.normalized * Mathf.Sqrt (diff.magnitude); 
+
 		}
 
 	}

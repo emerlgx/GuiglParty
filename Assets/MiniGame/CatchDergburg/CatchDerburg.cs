@@ -4,7 +4,7 @@ using System.Collections;
 public class CatchDerburg : MiniGameMulti {
 	private GameObject derberg;
 	private Vector3[] startPosns;
-	private AvatarMovers[] avatars;
+	private ChaserMover[] avatars;
 	public GameObject avatarTemplate;
 	private float bounds  = 4;
 
@@ -17,14 +17,14 @@ public class CatchDerburg : MiniGameMulti {
 			new Vector3(-bounds, -bounds, 0),
 			new Vector3( bounds, -bounds, 0)
 		};
-		avatars = new GameObject[4];
+		avatars = new ChaserMover[4];
 	}
 
 	void Start () {
 		GameObject[] chasers = new GameObject[4];
 		for (int i = 0; i < 4; i++) {
 			chasers[i] = Instantiate(avatarTemplate, startPosns[i], Quaternion.identity) as GameObject;
-			avatars[i] = chasers[i].GetComponent<AvatarMover>();
+			avatars[i] = chasers[i].GetComponent<ChaserMover>();
 			//maybe get ahold of their control scripts
 		}
 
@@ -38,6 +38,10 @@ public class CatchDerburg : MiniGameMulti {
 		for (int i = 0; i < 4; i++) {
 			avatars[i].move(inputs[i]);
 		}
+	}
+
+	public override void tick(InputSet input){
+		inputs[0] = input;
 	}
 
 	public override void setPartyer(Partyer p){
@@ -56,4 +60,7 @@ public class CatchDerburg : MiniGameMulti {
 			0
 		);
 	}
+
+	public override void control(ControlCommand cmd){}
+	public override void takeCommand(int i, ControlCommand cmd){}
 }
