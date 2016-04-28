@@ -5,7 +5,12 @@ using System.Collections.Generic;
 //from KeyInput import InputSet;
 
 public class God : MonoBehaviour {
-	public GameObject[] allGames;
+	public GameObject[][] allGames;
+	public GameObject[] games1P;
+	public GameObject[] games2P;
+	public GameObject[] games3P;
+	public GameObject[] games4P;
+
 	private string[]    names;
 	public Sprite[]     sprites;
 	private Partyer[]   partyers;
@@ -45,7 +50,6 @@ public class God : MonoBehaviour {
 	private float replaceGameCounter;
 	public GameObject explosionGif;
 
-	// Use this for initialization
 	void Awake() {
 		keyboardPlayerMap = new int[4]{ 
 			(int)PartyNames.Guigl,      (int)PartyNames.Ubaldino, 
@@ -54,6 +58,11 @@ public class God : MonoBehaviour {
 
 		swapper = GetComponent<TextureHolder>();
 		inputManager = GetComponent<KeyInput>();
+		allGames = new GameObject[4][];
+		allGames [0] = games1P;
+		allGames [1] = games2P;
+		allGames [2] = games3P;
+		allGames [3] = games4P;
 
 		miniGames = new MiniGame[4];
 
@@ -98,11 +107,11 @@ public class God : MonoBehaviour {
 		}
 	}
 
-	// Update is called once per frame
 	void Update () {
 		//decide whether to swap
 		if (screenSwapCounter <= 0.0f) {
 			swapSomething();
+			screenSwapCounter = UnityEngine.Random.Range(screenSwapTimeMin, screenSwapTimeMax);
 		} else {
 			screenSwapCounter -= Time.deltaTime;
 		}
@@ -110,6 +119,7 @@ public class God : MonoBehaviour {
 		// decide whether to flip
 		if (screenFlipCounter <= 0.0f) {
 			quadFlip();
+			screenFlipCounter = UnityEngine.Random.Range (screenFlipTimeMin, screenFlipTimeMax);
 		} else {
 			screenFlipCounter -= Time.deltaTime;
 		}
@@ -123,6 +133,7 @@ public class God : MonoBehaviour {
 
 		if (replaceGameCounter <= 0f) {
 			replaceGames();
+			replaceGameCounter = UnityEngine.Random.Range(replaceGameTimeMin, replaceGameTimeMax);
 		} else {
 			replaceGameCounter -= Time.deltaTime;
 		}
@@ -148,7 +159,7 @@ public class God : MonoBehaviour {
 
 
 	void createNewGame(int camNum, Partyer partyer){
-		GameObject miniGameInstance = Instantiate(allGames[Random.Range(0, allGames.Length)]);
+		GameObject miniGameInstance = Instantiate(allGames[0][Random.Range(0, allGames.Length)]) as GameObject;
 		//GameObject miniGameInstance = Instantiate(allGames[1]);
 		Vector3 posn = gameCams[camNum].transform.position;
 		posn.z = 0;
@@ -172,7 +183,6 @@ public class God : MonoBehaviour {
 				replaceGame (i);
 			}
 		}
-		replaceGameCounter = UnityEngine.Random.Range(replaceGameTimeMin, replaceGameTimeMax);
 	}
 
 	void swapSomething(){
@@ -192,9 +202,7 @@ public class God : MonoBehaviour {
 			if (System.Array.IndexOf(swappers, i) < 0)
 				continue;
 			miniGames[i].setInSwap(false); 
-		} 
-
-		screenSwapCounter = UnityEngine.Random.Range(screenSwapTimeMin, screenSwapTimeMax);
+		}
 	}
 
 	int[] choosePlayers(){
@@ -213,6 +221,5 @@ public class God : MonoBehaviour {
 			UnityEngine.Random.value > 0.5f };
 		
 		swapper.flipScreens(flipper, screenFlipDuration);
-		screenFlipCounter = UnityEngine.Random.Range (screenFlipTimeMin, screenFlipTimeMax);
 	}
 }
