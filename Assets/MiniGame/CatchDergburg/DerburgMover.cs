@@ -10,12 +10,12 @@ public class DerburgMover : MonoBehaviour {
 	}
 		
 	void Update () {
-		Vector3 direction = new Vector3(0, 0, 0);
+		Vector3 away = transform.position;
 		for (int i = 0; i < 4; i++) {
 			Vector3 diff = transform.position - chasers [i].position;
-			direction += diff.normalized * Mathf.Sqrt (diff.magnitude); 
-
+			away += diff.normalized * Mathf.Sqrt (diff.magnitude); 
 		}
+		transform.position = speed * Vector3.Lerp(transform.position, away, Time.deltaTime);
 
 	}
 
