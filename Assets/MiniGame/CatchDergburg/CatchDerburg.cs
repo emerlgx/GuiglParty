@@ -59,6 +59,7 @@ public class CatchDerburg : MiniGameMulti {
 		partyers[index] = p;
 		//maybe get ahold of their control scripts
 		chasers[index].GetComponent<SpriteRenderer>().sprite = p.face;
+		chasers [index].partyer = partyers[index];
 	}
 
 	void placeDerberg(){
