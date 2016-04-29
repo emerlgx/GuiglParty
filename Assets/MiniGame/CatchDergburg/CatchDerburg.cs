@@ -34,7 +34,7 @@ public class CatchDerburg : MiniGameMulti {
 		}
 
 		derberg.GetComponent<DerburgMover>().setChasers(chaserObjs);
-		placeDerberg();
+		derberg.GetComponent<DerburgMover>().placeDerberg();
 
 	}
 	
@@ -61,15 +61,7 @@ public class CatchDerburg : MiniGameMulti {
 		chasers[index].GetComponent<SpriteRenderer>().sprite = p.face;
 		chasers [index].partyer = partyers[index];
 	}
-
-	void placeDerberg(){
-		derberg.transform.localPosition = new Vector3 (
-			Random.Range (-bounds, bounds),
-			Random.Range (-bounds, bounds),
-			0
-		);
-	}
-
+		
 	public override void control(ControlCommand cmd){}
 	public override void takeCommand(int i, ControlCommand cmd){}
 }

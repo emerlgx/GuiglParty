@@ -47,10 +47,6 @@ public class God : MonoBehaviour {
 	private bool[] lockPosition = {false,false,false,false}; // when true, disallows swaps/rotations on a given screen
 
 	private JukeBox jukeBox;
-	public float musicSwitchTimeMax = 60.0f;	// max time between swaps
-	public float musicSwitchTimeMin = 15.0f;	// minimum time between swaps
-	private float musicSwitchCounter;
-
 	private Vector3[] scoreBoardPosns; 
 
 	public float replaceGameChance;
@@ -117,10 +113,9 @@ public class God : MonoBehaviour {
 
 			screenSwapCounter = UnityEngine.Random.Range (screenSwapTimeMin, screenSwapTimeMax);
 			screenFlipCounter = UnityEngine.Random.Range (screenFlipTimeMin, screenFlipTimeMax);
-			musicSwitchCounter = UnityEngine.Random.Range(musicSwitchTimeMin, musicSwitchTimeMax);
 			replaceGameCounter = UnityEngine.Random.Range(replaceGameTimeMin, replaceGameTimeMax);
 
-			jukeBox.pickSong(musicSwitchCounter);
+			jukeBox.pickSong(replaceGameCounter);
 		}
 	}
 
@@ -140,17 +135,11 @@ public class God : MonoBehaviour {
 		} else {
 			screenFlipCounter -= Time.deltaTime;
 		}
-
-		if (musicSwitchCounter <= 0.0f) {
-			musicSwitchCounter = UnityEngine.Random.Range(musicSwitchTimeMin, musicSwitchTimeMax);
-			jukeBox.pickSong(musicSwitchCounter);
-		} else {
-			musicSwitchCounter -= Time.deltaTime;
-		}
-
+			
 		if (replaceGameCounter <= 0f) {
 			replaceGames();
 			replaceGameCounter = UnityEngine.Random.Range(replaceGameTimeMin, replaceGameTimeMax);
+			jukeBox.pickSong(replaceGameCounter);
 		} else {
 			replaceGameCounter -= Time.deltaTime;
 		}

@@ -25,7 +25,7 @@ public class JukeBox : MonoBehaviour {
 	}
 
 	void switchSong(AudioClip nextSong){
-		recordScratch.pitch = UnityEngine.Random.Range(1f, 2f);
+		recordScratch.pitch = Constants.Gauissian(1.2f, 0.4f);
 		recordScratch.Play();
 		musicMaker.Stop();
 		musicMaker.clip = nextSong;
@@ -49,7 +49,8 @@ public class JukeBox : MonoBehaviour {
 	}
 
 	public void Update() {
-		musicMaker.pitch = Mathf.Lerp (startPitch, goalPitch, clipTime / clipDuration);
+		float clipInterval = clipTime / clipDuration;
+		musicMaker.pitch = Mathf.Lerp (startPitch, goalPitch, Mathf.Pow(clipInterval, 3f));
 		clipTime += Time.deltaTime;
 		//Debug.Log (musicMaker.pitch);
 	}
