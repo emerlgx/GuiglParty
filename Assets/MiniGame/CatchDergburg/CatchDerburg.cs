@@ -51,6 +51,7 @@ public class CatchDerburg : MiniGameMulti {
 	}
 
 	public override void setPartyer(Partyer p){
+		partyer = p;
 		addPartyer (0, p);
 	}
 
